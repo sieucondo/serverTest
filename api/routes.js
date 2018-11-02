@@ -1,6 +1,8 @@
 'use strict';
 module.exports = function(app) {
   let productsCtrl = require('./controller/ProductsController');
+  let wifiCtrl = require('./controller/WifiController');
+
 
   // todoList Routes
   app.route('/products')
@@ -11,4 +13,10 @@ module.exports = function(app) {
     .get(productsCtrl.detail)
     .put(productsCtrl.update)
     .delete(productsCtrl.delete);
+
+    app.route('/products2/:tableKey&:typeId')
+    .get(productsCtrl.getProductByType);
+
+  app.route('/table/:tableKey')
+    .get(wifiCtrl.getWifi);
 };
