@@ -9,18 +9,26 @@ module.exports = {
         let sql = 'SELECT * FROM `products`'
         db.query(sql, (err, response) => {
             if (err) throw err
-            res.json(response )
+            res.json(response)
         })
     },
     // lấy ra menu theo tableKey nhà hàng
     detail: (req, res) => {
-        let sql = 'Select p.Id AS productId, p.storeId, p.ProductName, t.TableName, s.StoreName\
-        FROM `table` t\
-            JOIN store s ON t.storeid = s.id\
-            JOIN products p ON s.id = p.storeid\
-        WHERE\
-            t.tablekey=?'
-        db.query(sql, [req.params.productId], (err, response) => {
+        let sql = 'SELECT ty.Id , ty.Type\
+            FROM\
+                `table` t\
+                JOIN\
+                store s ON t.storeid = s.id\
+                JOIN\
+                products p ON s.id = p.storeid\
+                JOIN\
+                category c ON c.id = p.category\
+                JOIN\
+                `type` ty ON ty.id = c.typeId\
+            WHERE\
+                t.tablekey = ?\
+            GROUP BY ty.Id;'
+        db.query(sql, [req.params.tableKey], (err, response) => {
             if (err) throw err
             res.json(response)
         })
