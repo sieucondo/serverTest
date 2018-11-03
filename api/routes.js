@@ -19,11 +19,7 @@ module.exports = function (app) {
 
   app.route('/table/:tableKey')
     .get(wifiCtrl.getWifi);
-<<<<<<< HEAD
   
   app.route('/products/:tableKey')  
     .get(productsCtrl.getAllProduct);
-=======
-    
->>>>>>> 736a79586c5556a975b18866c29a3baaf36bd2ca
 };
