@@ -14,12 +14,12 @@ module.exports = function (app) {
     .put(productsCtrl.update)
     .delete(productsCtrl.delete);
 
-  app.route('/products2/:tableKey&:typeId')
+  app.route('/products-type/:tableKey&:typeId')
     .get(productsCtrl.getProductByType);
 
-  app.route('/table/:tableKey')
+  app.route('/wifi/:tableKey')
     .get(wifiCtrl.getWifi);
   
-  app.route('/products/:tableKey')  
+  app.route('/products-all/:tableKey')  
     .get(productsCtrl.getAllProduct);
 };
