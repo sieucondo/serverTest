@@ -50,6 +50,7 @@ module.exports = {
         })
     },
     // lấy menu theo tableKey và Type
+  
     getProductByType: (req, res) => {
         let sql = 'SELECT *\
                 FROM\
@@ -60,7 +61,8 @@ module.exports = {
                             c.`Description`,\
                             ty.`Type`,\
                             t.TableName,\
-                            s.StoreName\
+                            s.StoreName,\
+                            p.ProductPrice\
                     FROM\
                         `table` t\
                     JOIN store s ON t.storeid = s.id\
@@ -74,6 +76,32 @@ module.exports = {
         let tableKey = req.params.tableKey;
         let typeId = req.params.typeId;
         db.query(sql, [tableKey, typeId], (err, response) => {
+            if (err) throw err
+            res.json(response)
+        })
+    },
+    //lấy tất cả đồ ăn đồ uống trong quán
+    getAllProduct: (req, res) => {
+        let sql = 'SELECT \
+        p.id,\
+            c.TypeId,\
+            p.ProductName,\
+            c.`Description`,\
+            ty.`Type`,\
+            t.TableName,\
+            s.StoreName,\
+            p.ProductPrice\
+    FROM\
+        `table` t\
+    JOIN store s ON t.storeid = s.id\
+    JOIN products p ON s.id = p.storeid\
+    JOIN category c ON c.id = p.category\
+    JOIN `type` ty ON ty.id = c.typeId\
+    WHERE\
+        t.tablekey = ?';
+        let tableKey = req.params.tableKey;
+ 
+        db.query(sql, [tableKey], (err, response) => {
             if (err) throw err
             res.json(response)
         })
