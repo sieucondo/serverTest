@@ -79,9 +79,12 @@ module.exports = {
                     WHERE\
                         t.tablekey = ?) a\
                 WHERE\
-                    a.TypeId = ?';
+                    a.TypeId LIKE "%"?"%"';
         let tableKey = req.params.tableKey;
         let typeId = req.params.typeId;
+        if(typeId == 0){
+            typeId = ""
+        }
         db.query(sql, [tableKey, typeId], (err, response) => {
             if (err) throw err
             res.json(response)
