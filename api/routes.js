@@ -3,6 +3,7 @@ module.exports = function (app) {
   let productsCtrl = require('./controller/ProductsController');
   let wifiCtrl = require('./controller/WifiController');
   let tableCtrl = require('./controller/TableController');
+  let billCtrl = require('./controller/BillController');
 
   // todoList Routes
   app.route('/products')
@@ -19,10 +20,17 @@ module.exports = function (app) {
 
   app.route('/wifi/:tableKey')
     .get(wifiCtrl.getWifi);
-  
-  app.route('/products-all/:tableKey')  
+
+  app.route('/products-all/:tableKey')
     .get(productsCtrl.getAllProduct);
 
   app.route('/table/:tableKey')
     .get(tableCtrl.getAllTableKey);
+
+  app.route('/bill/:tableKey')
+    .get(billCtrl.createBill);
+
+  app.route('/bill/:BillId&:ProductId&:Quantity')
+    .post(billCtrl.addProductsToBillDetail);
+
 };

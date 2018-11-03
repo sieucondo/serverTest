@@ -54,7 +54,7 @@ module.exports = {
         let sql = 'DELETE FROM products WHERE id = ?'
         db.query(sql, [req.params.productId], (err, response) => {
             if (err) throw err
-            res.json({ message: 'Delete success!' })
+            res.send({ message: 'Delete success!' })
         })
     },
     // lấy menu theo tableKey và Type
