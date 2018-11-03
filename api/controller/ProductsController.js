@@ -9,7 +9,7 @@ module.exports = {
         let sql = 'SELECT * FROM `products`'
         db.query(sql, (err, response) => {
             if (err) throw err
-            res.json({ products: response })
+            res.json(response )
         })
     },
     // lấy ra menu theo tableKey nhà hàng
