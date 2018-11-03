@@ -2,7 +2,7 @@
 module.exports = function (app) {
   let productsCtrl = require('./controller/ProductsController');
   let wifiCtrl = require('./controller/WifiController');
-
+  let tableCtrl = require('./controller/TableController');
 
   // todoList Routes
   app.route('/products')
@@ -22,4 +22,7 @@ module.exports = function (app) {
   
   app.route('/products-all/:tableKey')  
     .get(productsCtrl.getAllProduct);
+
+  app.route('/table/:tableKey')
+    .get(tableCtrl.getAllTableKey);
 };
