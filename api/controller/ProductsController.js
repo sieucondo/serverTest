@@ -79,20 +79,22 @@ module.exports = {
                     WHERE\
                         t.tablekey = ?) a\
                 WHERE\
-                    a.TypeId like % ? %';
+                    a.TypeId like % ?';
 
-        
 
         let tableKey = req.params.tableKey;
         let typeId = req.params.typeId;
-    
-            db.query(sql, [tableKey, typeId], (err, response) => {
-                if (err) throw err
-                res.json(response)
-            });
-   
+        If(){
+            
+        }
+         
+        db.query(sql, [tableKey, typeId], (err, response) => {
+            if (err) throw err
+            res.json(response)
+        });
 
-      
+
+
     },
     //lấy tất cả đồ ăn đồ uống trong quán
     getAllProduct: (req, res) => {
