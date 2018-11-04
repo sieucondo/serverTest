@@ -17,8 +17,8 @@ module.exports = function (app) {
   app.route('/products-type/:tableKey&:typeId')
     .get(productsCtrl.getProductByType);
 
-  app.route('/wifi/:tableKey')
-    .get(wifiCtrl.getWifi);
+  app.route('/information/:tableKey')
+    .get(wifiCtrl.getInfor);
   
   app.route('/products-all/:tableKey')  
     .get(productsCtrl.getAllProduct);
