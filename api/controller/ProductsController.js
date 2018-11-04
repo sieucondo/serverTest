@@ -79,7 +79,6 @@ module.exports = {
                     WHERE\
                         t.tablekey = ?) a\
                 WHERE\
-
                     a.TypeId LIKE "%"?"%"';
         let tableKey = req.params.tableKey;
         let typeId = req.params.typeId;
