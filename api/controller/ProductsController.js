@@ -79,6 +79,7 @@ module.exports = {
                     WHERE\
                         t.tablekey = ?) a\
                 WHERE\
+
                     a.TypeId LIKE "%"?"%"';
         let tableKey = req.params.tableKey;
         let typeId = req.params.typeId;
@@ -90,7 +91,9 @@ module.exports = {
             res.json(response)
         })
 
-      
+
+
+
     },
     //lấy tất cả đồ ăn đồ uống trong quán
     getAllProduct: (req, res) => {
