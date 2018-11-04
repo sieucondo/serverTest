@@ -24,9 +24,12 @@ module.exports = function (app) {
   app.route('/products-all/:tableKey')  
     .get(productsCtrl.getAllProduct);
 
-  app.route('/bill')
-    .get(billCtrl.createBill);
-
   app.route('/table/:tableKey')
     .get(tableCtrl.getAllTableKey);
+
+  app.route('/bill/:tableKey')
+    .get(billCtrl.createBill);
+
+  app.route('/bills/:BillId&:ProductId&:Quantity')
+    .post(billCtrl.addProductsToBillDetail);
 };

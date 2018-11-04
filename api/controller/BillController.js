@@ -12,8 +12,6 @@ module.exports = {
         CALL `CreateNewBill`(@TableKey);';
         db.query(sql, [req.params.tableKey], (err, response) => {
             if (err) throw err
-            // rows.forEach(element => {
-            //     if (element.constructor == Array) {
             res.json(response[1]);
         })
     },
