@@ -15,5 +15,16 @@ module.exports = {
             if (err) throw err
             res.json(response)
         })
+    },
+    // nhập tableKey lấy ra status
+    getTableStatus: (req, res) => {
+        let sql = 'SELECT t.IsAvailable\
+            FROM `table` t\
+            WHERE t.TableKey = ?\
+            ;'
+        db.query(sql, [req.params.tableKey], (err, response) => {
+            if (err) throw err
+            res.json({IsAvailable: response[0].IsAvailable[0]})
+        })
     }
 }
