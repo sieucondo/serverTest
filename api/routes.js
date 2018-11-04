@@ -20,8 +20,8 @@ module.exports = function (app) {
 
   app.route('/information/:tableKey')
     .get(wifiCtrl.getInfor);
-  
-  app.route('/products-all/:tableKey')  
+
+  app.route('/products-all/:tableKey')
     .get(productsCtrl.getAllProduct);
 
   app.route('/table/:tableKey')
@@ -32,4 +32,7 @@ module.exports = function (app) {
 
   app.route('/bills/:BillId&:ProductId&:Quantity')
     .post(billCtrl.addProductsToBillDetail);
+
+  app.route('/table-status/:tableKey')
+    .get(tableCtrl.getTableStatus);
 };
