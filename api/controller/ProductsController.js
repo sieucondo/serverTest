@@ -79,41 +79,18 @@ module.exports = {
                     WHERE\
                         t.tablekey = ?) a\
                 WHERE\
-                    a.TypeId = ?';
+                    a.TypeId like % ? %';
 
-        let sql1 = 'SELECT \
-                    p.id,\
-                    c.TypeId,\
-                    p.ProductName,\
-                    c.`Description`,\
-                    ty.`Type`,\
-                    t.TableName,\
-                    s.StoreName,\
-                    p.ProductPrice\
-                FROM\
-                    `table` t\
-                JOIN store s ON t.storeid = s.id\
-                JOIN products p ON s.id = p.storeid\
-                JOIN category c ON c.id = p.category\
-                JOIN `type` ty ON ty.id = c.typeId\
-                WHERE\
-                    t.tablekey = ?';
+        
 
         let tableKey = req.params.tableKey;
         let typeId = req.params.typeId;
-        console.log(typeId)
-
-        if((typeId == 1)||(typeId)==2){
+    
             db.query(sql, [tableKey, typeId], (err, response) => {
                 if (err) throw err
                 res.json(response)
             });
-        }else{
-            db.query(sql1, [tableKey], (err, response) => {
-                if (err) throw err
-                res.json(response)
-            });
-        }
+   
 
       
     },
