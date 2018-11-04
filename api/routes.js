@@ -30,7 +30,6 @@ module.exports = function (app) {
   app.route('/bill/:tableKey')
     .get(billCtrl.createBill);
 
-  app.route('/bill/:BillId&:ProductId&:Quantity')
+  app.route('/bills/:BillId&:ProductId&:Quantity')
     .post(billCtrl.addProductsToBillDetail);
-
 };

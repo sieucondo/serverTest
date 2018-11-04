@@ -9,7 +9,7 @@ module.exports = {
         let sql = 'SELECT * FROM `products`'
         db.query(sql, (err, response) => {
             if (err) throw err
-            res.json(response)
+            res.json({product: response})
         })
     },
     // lấy ra categories nhà hàng theo tableKey
@@ -65,6 +65,7 @@ module.exports = {
                         p.id,\
                             c.TypeId,\
                             p.ProductName,\
+                            im.ImgPath,\
                             c.`Description`,\
                             ty.`Type`,\
                             t.TableName,\
@@ -76,10 +77,10 @@ module.exports = {
                     JOIN products p ON s.id = p.storeid\
                     JOIN category c ON c.id = p.category\
                     JOIN `type` ty ON ty.id = c.typeId\
+                    JOIN image im ON im.id = p.imageid\
                     WHERE\
                         t.tablekey = ?) a\
                 WHERE\
-
                     a.TypeId LIKE "%"?"%"';
         let tableKey = req.params.tableKey;
         let typeId = req.params.typeId;
@@ -89,11 +90,7 @@ module.exports = {
         db.query(sql, [tableKey, typeId], (err, response) => {
             if (err) throw err
             res.json(response)
-        })
-
-
-
-
+        });
     },
     //lấy tất cả đồ ăn đồ uống trong quán
     getAllProduct: (req, res) => {

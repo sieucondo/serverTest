@@ -10,15 +10,9 @@ module.exports = {
         // let data = req.body;
         let sql = 'SET @TableKey=?; \
         CALL `CreateNewBill`(@TableKey);';
-        db.query(sql, [req.params.tableKey], (err, rows, response) => {
-            if (!err) {
-                rows.forEach(element => {
-                    if (element.constructor == Array) {
-                        res.json(element[0].billId);
-                    }
-                });
-            }
-            else throw err;
+        db.query(sql, [req.params.tableKey], (err, response) => {
+            if (err) throw err
+            res.json(response[1]);
         })
     },
     addProductsToBillDetail: (req, res) => {
