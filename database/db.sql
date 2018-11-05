@@ -99,7 +99,7 @@ CREATE TABLE `user` (
   `Fullname` varchar(250) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `Address` varchar(250) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
   `Dob` date DEFAULT NULL,
-  `StoreId` int(11) NOT NULL,
+  `StoreId` int(11) NULL,
   `Password` varchar(250) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -189,7 +189,8 @@ INSERT INTO `fastorder`.`wifi` (`StoreId`, `Name`, `Password`) VALUES
 
 INSERT INTO `fastorder`.`user` (`UserName`, `Fullname`, `Address`, `Dob`, `StoreId`, `RoleId`, `Password`) VALUES
 ('MDA1234', 'Mã Đại', '13 hải hồ', '1988-09-12', '1', '2', 'abcd1234'),
-('OKKK1234', 'Mã Đáo', '13 hàm nghi', '1987-03-12', '2', '2', 'abcd1234')
+('OKKK1234', 'Mã Đáo', '13 hàm nghi', '1987-03-12', '2', '2', 'abcd1234'),
+('sieutnm123', 'Siêu', '12 hùng vương', '1997-03-28', '0', '1', 'abcd1234');
 ;
 
 INSERT INTO `fastorder`.`role` (`Id`, `RoleType`) VALUES
