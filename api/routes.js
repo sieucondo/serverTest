@@ -5,6 +5,7 @@ module.exports = function (app) {
   let tableCtrl = require('./controller/TableController');
   let billCtrl = require('./controller/BillController');
   let orderCtrl = require('./controller/OrderController');
+  let userCtrl = require('./controller/UserController');
 
   // todoList Routes
   app.route('/products')
@@ -39,4 +40,7 @@ module.exports = function (app) {
 
   app.route('/order/:storeId')
     .get(orderCtrl.getOrderByStoreId);
+    
+  app.route('/user/:Username&:Password')  
+    .get(userCtrl.getRoleAndStoreId);
 };
