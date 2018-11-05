@@ -9,7 +9,7 @@ module.exports = {
         let sql = 'SELECT * FROM `products`'
         db.query(sql, (err, response) => {
             if (err) throw err
-            res.json({product: response})
+            res.json({ product: response })
         })
     },
     // lấy ra categories nhà hàng theo tableKey
@@ -84,7 +84,7 @@ module.exports = {
                     a.TypeId LIKE "%"?"%"';
         let tableKey = req.params.tableKey;
         let typeId = req.params.typeId;
-        if(typeId == 0){
+        if (typeId == 0) {
             typeId = ""
         }
         db.query(sql, [tableKey, typeId], (err, response) => {
@@ -118,4 +118,12 @@ module.exports = {
             res.json(response)
         })
     },
+    getProductsByStoreId: (req, res) => {        
+        let sql = 'SET @StoreId = ?;\
+        CALL`fastorder`.`GetProductByStoreId`(@StoreId);';
+        db.query(sql, [req.params.storeId], (err, response) => {
+            if (err) throw err
+            res.json(response[1]);
+        })
+    }
 }

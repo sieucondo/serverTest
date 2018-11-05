@@ -172,7 +172,7 @@ INSERT INTO `fastorder`.`products`(`StoreId`,`ImageId`,`ProductName`,`ProductPri
 INSERT INTO `fastorder`.`store` (`StoreKey`,`Location`,`StoreName`,`PhoneNumber`,`Province`,`UserId`)VALUES
 ('SD0001', '12 Nguy?n Van Quá', 'MDA', 0910888333, 'TP HCM', '1'),
 ( 'SF0001', '04 hà huy t?p', 'OKKK', 0988744571, 'TP HCM', '2'),
-('SFD0001', '13 xô vi?t ngh? tinh', 'JO', 0935198848, 'TP HCM', '')
+('SFD0001', '13 xô vi?t ngh? tinh', 'JO', 0935198848, 'TP HCM', '0')
 ;
 
 INSERT INTO `fastorder`.`table` (`TableKey`,`StoreId`,`TableName`,`Floor`)VALUES

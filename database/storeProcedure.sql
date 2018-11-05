@@ -71,7 +71,7 @@ BEGIN
     o.Id AS OrderId,
     o.DateCreate,
     o.Total,
-    o.Status
+    CASE WHEN o.Status = 0 THEN FALSE ELSE TRUE END AS `Status`
 	FROM
 		`order` o
 			JOIN
