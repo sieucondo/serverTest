@@ -112,6 +112,7 @@ CREATE TABLE `user` (
   `Address` varchar(250) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
   `StoreId` int(11) NULL,
   `Password` varchar(250) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+
   PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 ALTER TABLE `fastorder`.`user` 
