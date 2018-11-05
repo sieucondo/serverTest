@@ -1,7 +1,6 @@
 'use strict';
 module.exports = function (app) {
   let productsCtrl = require('./controller/ProductsController');
-  let wifiCtrl = require('./controller/WifiController');
   let tableCtrl = require('./controller/TableController');
   let billCtrl = require('./controller/BillController');
   let orderCtrl = require('./controller/OrderController');
@@ -19,10 +18,7 @@ module.exports = function (app) {
 
   app.route('/products-type/:tableKey&:typeId')
     .get(productsCtrl.getProductByType);
-
-  app.route('/information/:tableKey')
-    .get(wifiCtrl.getInfor);
-
+    
   app.route('/products-all/:tableKey')
     .get(productsCtrl.getAllProduct);
 
@@ -52,5 +48,8 @@ module.exports = function (app) {
 
   app.route('/createorderdetail/:OrderId&:ProductId&:Quantity')
     .post(orderCtrl.addProductsToOrderDetail);
+
+  app.route('/table-status/:storeID')
+    .get(tableCtrl.getAllTableKey);
 
 };

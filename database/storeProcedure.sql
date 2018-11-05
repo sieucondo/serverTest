@@ -38,23 +38,23 @@ DELIMITER $$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `AddNewProduct`(
 	_StoreId int,
 	_ImgUrl text,
-    _Description text,
 	_ProductName text,
     _ProductPrice float,
-    _Category int
+    _TypeId int
 )
 BEGIN
 	DECLARE _Curdate datetime DEFAULT current_time();
     
 	INSERT INTO `fastorder`.`image` (`Description`, `ImgPath`, `DateCreate`) VALUES (
-    _Desciption, _ImgUrl, _Curdate
+    '', _ImgUrl, _Curdate
 	);
-    INSERT INTO `fastorder`.`products` (`StoreId`, `ImageId`, `ProductName`, `ProductPrice`, `Category`) VALUES (
+    
+    INSERT INTO `fastorder`.`products` (`StoreId`, `ImageId`, `ProductName`, `ProductPrice`, `TypeId`) VALUES (
     _StoreId,
     (select id from image where ImgPath LIKE _ImgUrl and DateCreate = _Curdate),
     _ProductName,
     _ProductPrice,
-    _Category
+    _TypeId
 	);
 
 END$$
@@ -156,9 +156,19 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `getRoleAndStoreId`(
 )
 BEGIN
 
-SELECT RoleType , s.Id as StoreId
-FROM fastorder.user u, fastorder.role r, store s
-where u.RoleId = r.Id and s.UserId = u.Id and u.UserName = _Username and u.Password = _Password;
+	SELECT 
+		u.Id As UserId, r.Id As RoleId, s.Id As StoreId,
+		u.UserName, u.Fullname, s.StoreName, r.RoleType,
+		CASE WHEN s.IsDeleted = 0 THEN FALSE ELSE TRUE END AS IsDeleted
+	FROM 
+		`user` u
+		JOIn `role`r ON r.Id = u.RoleId 
+		join store s on s.Id = u.StoreId
+	where 
+		u.UserName like _Username
+		
+	 and u.Password like _Password
+	 ;
 
 END
 $$

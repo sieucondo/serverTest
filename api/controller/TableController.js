@@ -26,5 +26,17 @@ module.exports = {
             if (err) throw err
             res.json({IsAvailable: response[0].IsAvailable[0]})
         })
+    },
+    // lấy table theo id quán
+    getTablesByStoreID: (req, res) => {
+        let sql = 'SELECT t.Id AS TableId, s.Id AS StoreId, t.TableKey, t.TableName, s.StoreName\
+            FROM `table` t\
+            JOIN store s ON s.Id = t.StoreId\
+            WHERE t.TableKey = ?\
+            ;'
+        db.query(sql, [req.params.storeID], (err, response) => {
+            if (err) throw err
+            res.json(response)
+        })
     }
 }

@@ -17,14 +17,9 @@ module.exports = {
         let sql = 'SELECT ty.Id , ty.Type\
             FROM\
                 `table` t\
-                JOIN\
-                store s ON t.storeid = s.id\
-                JOIN\
-                products p ON s.id = p.storeid\
-                JOIN\
-                category c ON c.id = p.category\
-                JOIN\
-                `type` ty ON ty.id = c.typeId\
+                JOIN store s ON t.storeid = s.id\
+                JOIN products p ON s.id = p.storeid\
+                JOIN `type` ty ON ty.id = p.typeid\
             WHERE\
                 t.tablekey = ?\
             GROUP BY ty.Id;'
@@ -60,28 +55,24 @@ module.exports = {
     // lấy menu theo tableKey và Type
     getProductByType: (req, res) => {
         let sql = 'SELECT *\
-                FROM\
-                    (SELECT \
-                        p.id,\
-                            c.TypeId,\
-                            p.ProductName,\
-                            im.ImgPath,\
-                            c.`Description`,\
-                            ty.`Type`,\
-                            t.TableName,\
-                            s.StoreName,\
-                            p.ProductPrice\
-                    FROM\
-                        `table` t\
-                    JOIN store s ON t.storeid = s.id\
-                    JOIN products p ON s.id = p.storeid\
-                    JOIN category c ON c.id = p.category\
-                    JOIN `type` ty ON ty.id = c.typeId\
-                    JOIN image im ON im.id = p.imageid\
-                    WHERE\
+        FROM\
+            (SELECT \
+                p.id,\
+                    ty.Id AS TypeId,\
+                    p.ProductName,\
+                    ty.`Type`,\
+                    t.TableName,\
+                    s.StoreName,\
+                    p.ProductPrice\
+            FROM\
+                `table` t\
+            JOIN store s ON t.storeid = s.id\
+            JOIN products p ON s.id = p.storeid\
+            JOIN `type` ty ON ty.id = p.typeid\
+            WHERE\
                         t.tablekey = ?) a\
-                WHERE\
-                    a.TypeId LIKE "%"?"%"';
+        WHERE\
+            a.TypeId LIKE "%"?"%"';
         let tableKey = req.params.tableKey;
         let typeId = req.params.typeId;
         if (typeId == 0) {
@@ -96,9 +87,8 @@ module.exports = {
     getAllProduct: (req, res) => {
         let sql = 'SELECT \
                 p.id,\
-                c.TypeId,\
+                ty.Id AS TypeId,\
                 p.ProductName,\
-                c.`Description`,\
                 ty.`Type`,\
                 t.TableName,\
                 s.StoreName,\
@@ -107,8 +97,7 @@ module.exports = {
                 `table` t\
             JOIN store s ON t.storeid = s.id\
             JOIN products p ON s.id = p.storeid\
-            JOIN category c ON c.id = p.category\
-            JOIN `type` ty ON ty.id = c.typeId\
+            JOIN `type` ty ON ty.id = p.typeid\
             WHERE\
                 t.tablekey = ?';
         let tableKey = req.params.tableKey;
@@ -118,7 +107,7 @@ module.exports = {
             res.json(response)
         })
     },
-    getProductsByStoreId: (req, res) => {        
+    getProductsByStoreId: (req, res) => {
         let sql = 'SET @StoreId = ?;\
         CALL`fastorder`.`GetProductByStoreId`(@StoreId);';
         db.query(sql, [req.params.storeId], (err, response) => {
