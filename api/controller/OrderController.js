@@ -15,7 +15,7 @@ module.exports = {
             res.json(response[1]);
         })
     },
-
+    // hàm tạo và trả về billId vừa được tạo
     createOrder: (req, res) => {
         // let data = req.body;
         let sql = 'SET @TableKey=?; \
