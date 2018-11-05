@@ -8,6 +8,7 @@ module.exports = {
     getRoleAndStoreId: (req, res) => {
         let sql = 'SET @UserName = ? ;SET @Password = ?;\
         CALL `getRoleAndStoreId`(@UserName, @Password);';
+
         db.query(sql, [req.params.Username ,req.params.Password], (err, response) => {
             if (err) throw err
             res.json(response[2])
