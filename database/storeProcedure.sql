@@ -38,23 +38,23 @@ DELIMITER $$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `AddNewProduct`(
 	_StoreId int,
 	_ImgUrl text,
-    _Description text,
 	_ProductName text,
     _ProductPrice float,
-    _Category int
+    _TypeId int
 )
 BEGIN
 	DECLARE _Curdate datetime DEFAULT current_time();
     
 	INSERT INTO `fastorder`.`image` (`Description`, `ImgPath`, `DateCreate`) VALUES (
-    _Desciption, _ImgUrl, _Curdate
+    '', _ImgUrl, _Curdate
 	);
-    INSERT INTO `fastorder`.`products` (`StoreId`, `ImageId`, `ProductName`, `ProductPrice`, `Category`) VALUES (
+    
+    INSERT INTO `fastorder`.`products` (`StoreId`, `ImageId`, `ProductName`, `ProductPrice`, `TypeId`) VALUES (
     _StoreId,
     (select id from image where ImgPath LIKE _ImgUrl and DateCreate = _Curdate),
     _ProductName,
     _ProductPrice,
-    _Category
+    _TypeId
 	);
 
 END$$

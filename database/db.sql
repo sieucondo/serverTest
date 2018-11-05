@@ -65,11 +65,11 @@ CREATE TABLE `products` (
   `ImageId` int(11) DEFAULT NULL,
   `ProductName` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
   `ProductPrice` float DEFAULT NULL,
-  `Category` int(11) DEFAULT NULL,
+  `TypeId` int(11) DEFAULT NULL,
   PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 ALTER TABLE `fastorder`.`products` 
-ADD COLUMN `IsDeleted` BIT NULL DEFAULT 0 AFTER `Category`;
+ADD COLUMN `IsDeleted` BIT NULL DEFAULT 0 AFTER `TypeId`;
 ALTER TABLE `fastorder`.`products` 
 ADD COLUMN `IsAvailable` BIT NULL DEFAULT 1 AFTER `IsDeleted`;
 
@@ -136,14 +136,19 @@ CREATE TABLE `fastorder`.`role` (
   PRIMARY KEY (`Id`)
 )ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+--DROP
+
+DROP TABLE `fastorder`.`category`;
+DROP TABLE `fastorder`.`wifi`;
+
 -- insert
-INSERT INTO `fastorder`.`category` (`TypeId`,`Description`) VALUES 
-(1, 'Cà phê'),
-(1, 'Nước ngọt'),
-(2, 'Hải Sản'),
-(2, 'Lẩu'),
-(1, 'Bia'),
-(2, 'Cơm');
+-- INSERT INTO `fastorder`.`category` (`TypeId`,`Description`) VALUES 
+-- (1, 'Cà phê'),
+-- (1, 'Nước ngọt'),
+-- (2, 'Hải Sản'),
+-- (2, 'Lẩu'),
+-- (1, 'Bia'),
+-- (2, 'Cơm');
 
 
 INSERT INTO `fastorder`.`image` (`Description`,`ImgPath`) VALUES
@@ -157,16 +162,16 @@ INSERT INTO `fastorder`.`image` (`Description`,`ImgPath`) VALUES
 ('cơm chiên dương châu', 'https://imgur.com/8Iikj46.jpg')
 ;
 
-INSERT INTO `fastorder`.`products`(`StoreId`,`ImageId`,`ProductName`,`ProductPrice`,`Category`)VALUES
+INSERT INTO `fastorder`.`products`(`StoreId`,`ImageId`,`ProductName`,`ProductPrice`,`Type`)VALUES
 ( 1, 1, 'Cà Phê Đen', 12, 1),
 ( 1, 2, 'Cà Phê Sữa', 15, 1),
-( 1, 4, 'Cocacola', 10, 2),
-( 2, 3, 'Tôm Hùm', 1256, 3),
-( 2, 3, 'Tôm Hùm đỏ', 1561, 3),
-( 3, 5, 'Heniken', 31, 5),
-( 3, 6, 'Strong bow', 14, 2),
-(1, 3, 'Tôm Hoàng Đế', 2500, 3),
-(1, 7, 'Cơm Chiên Dương Châu', 23, 6);
+( 1, 4, 'Cocacola', 10, 1),
+( 2, 3, 'Tôm Hùm', 1256, 2),
+( 2, 3, 'Tôm Hùm đỏ', 1561, 2),
+( 3, 5, 'Heniken', 31, 1),
+( 3, 6, 'Strong bow', 14, 1),
+(1, 3, 'Tôm Hoàng Đế', 2500, 2),
+(1, 7, 'Cơm Chiên Dương Châu', 23, 2);
 ;
 
 INSERT INTO `fastorder`.`store` (`StoreKey`,`Location`,`StoreName`,`PhoneNumber`,`Province`,`UserId`)VALUES
@@ -191,13 +196,13 @@ INSERT INTO `fastorder`.`type`(`Type`)VALUES
 ('Đồ Ăn')
 ;
 
-INSERT INTO `fastorder`.`wifi` (`StoreId`, `Name`, `Password`) VALUES
-('1', 'MDA1', '88888888'),
-('2', 'OKK1', '88888888'),
-('3', 'JOLO', '88888888'),
-('1', 'MDA2', '88888888'),
-('2', 'OKK2', '88888888')
-;
+-- INSERT INTO `fastorder`.`wifi` (`StoreId`, `Name`, `Password`) VALUES
+-- ('1', 'MDA1', '88888888'),
+-- ('2', 'OKK1', '88888888'),
+-- ('3', 'JOLO', '88888888'),
+-- ('1', 'MDA2', '88888888'),
+-- ('2', 'OKK2', '88888888')
+-- ;
 
 INSERT INTO `fastorder`.`user` (`UserName`, `Fullname`, `Address`, `StoreId`, `RoleId`, `Password`) VALUES
 ('MDA1234', 'Mã Đại', '13 hải hồ', '1', '2', 'abcd1234'),
