@@ -4,7 +4,7 @@ USE `fastorder`;
 CREATE TABLE `bill` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
   `TableId` int(11) DEFAULT NULL,
-  `DateCreate` date DEFAULT NULL,
+  `DateCreate` datetime DEFAULT NULL,
   `Total` float DEFAULT NULL,
   PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -24,12 +24,14 @@ CREATE TABLE `billdetail` (
 CREATE TABLE `order` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
   `TableId` int(11) DEFAULT NULL,
-  `DateCreate` date DEFAULT NULL,
+  `DateCreate` datetime DEFAULT NULL,
   `Total` float DEFAULT NULL,
   PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 ALTER TABLE `fastorder`.`bill` 
 CHANGE COLUMN `DateCreate` `DateCreate` DATETIME NULL DEFAULT NULL ;
+ALTER TABLE `fastorder`.`order` 
+ADD COLUMN `Status` BIT NULL AFTER `Total`;
 
 CREATE TABLE `orderdetail` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
@@ -54,6 +56,8 @@ CREATE TABLE `image` (
   `ImgPath` varchar(1000) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
   PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+ALTER TABLE `fastorder`.`image` 
+ADD COLUMN `DateCreate` DATETIME NULL AFTER `ImgPath`;
 
 CREATE TABLE `products` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
@@ -64,6 +68,10 @@ CREATE TABLE `products` (
   `Category` int(11) DEFAULT NULL,
   PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+ALTER TABLE `fastorder`.`products` 
+ADD COLUMN `IsDeleted` BIT NULL DEFAULT 0 AFTER `Category`;
+ALTER TABLE `fastorder`.`products` 
+ADD COLUMN `IsAvailable` BIT NULL DEFAULT 1 AFTER `IsDeleted`;
 
 CREATE TABLE `store` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
@@ -75,6 +83,10 @@ CREATE TABLE `store` (
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 ALTER TABLE `fastorder`.`store` 
 ADD COLUMN `StoreName` VARCHAR(250) NOT NULL AFTER `Location`;
+ALTER TABLE `fastorder`.`store` 
+ADD COLUMN `UserId` INT NULL AFTER `Province`;
+ALTER TABLE `fastorder`.`store` 
+ADD COLUMN `IsDeleted` BIT NULL DEFAULT 0 AFTER `UserId`;
 
 CREATE TABLE `table` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
@@ -98,7 +110,6 @@ CREATE TABLE `user` (
   `UserKey` varbinary(200) NOT NULL,
   `Fullname` varchar(250) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `Address` varchar(250) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
-  `Dob` date DEFAULT NULL,
   `StoreId` int(11) NULL,
   `Password` varchar(250) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   PRIMARY KEY (`Id`)
@@ -157,10 +168,10 @@ INSERT INTO `fastorder`.`products`(`StoreId`,`ImageId`,`ProductName`,`ProductPri
 (1, 7, 'Cơm Chiên Dương Châu', 23, 6);
 ;
 
-INSERT INTO `fastorder`.`store` (`StoreKey`,`Location`,`StoreName`,`PhoneNumber`,`Province`)VALUES
-('SD0001', '12 Nguy?n Van Quá', 'MDA', 0910888333, 'TP HCM'),
-( 'SF0001', '04 hà huy t?p', 'OKKK', 0988744571, 'TP HCM'),
-('SFD0001', '13 xô vi?t ngh? tinh', 'JO', 0935198848, 'TP HCM')
+INSERT INTO `fastorder`.`store` (`StoreKey`,`Location`,`StoreName`,`PhoneNumber`,`Province`,`UserId`)VALUES
+('SD0001', '12 Nguy?n Van Quá', 'MDA', 0910888333, 'TP HCM', '1'),
+( 'SF0001', '04 hà huy t?p', 'OKKK', 0988744571, 'TP HCM', '2'),
+('SFD0001', '13 xô vi?t ngh? tinh', 'JO', 0935198848, 'TP HCM', '')
 ;
 
 INSERT INTO `fastorder`.`table` (`TableKey`,`StoreId`,`TableName`,`Floor`)VALUES
@@ -187,10 +198,10 @@ INSERT INTO `fastorder`.`wifi` (`StoreId`, `Name`, `Password`) VALUES
 ('2', 'OKK2', '88888888')
 ;
 
-INSERT INTO `fastorder`.`user` (`UserName`, `Fullname`, `Address`, `Dob`, `StoreId`, `RoleId`, `Password`) VALUES
-('MDA1234', 'Mã Đại', '13 hải hồ', '1988-09-12', '1', '2', 'abcd1234'),
-('OKKK1234', 'Mã Đáo', '13 hàm nghi', '1987-03-12', '2', '2', 'abcd1234'),
-('sieutnm123', 'Siêu', '12 hùng vương', '1997-03-28', '0', '1', 'abcd1234');
+INSERT INTO `fastorder`.`user` (`UserName`, `Fullname`, `Address`, `StoreId`, `RoleId`, `Password`) VALUES
+('MDA1234', 'Mã Đại', '13 hải hồ', '1', '2', 'abcd1234'),
+('OKKK1234', 'Mã Đáo', '13 hàm nghi', '2', '2', 'abcd1234'),
+('sieutnm123', 'Siêu', '12 hùng vương', '0', '1', 'abcd1234');
 ;
 
 INSERT INTO `fastorder`.`role` (`Id`, `RoleType`) VALUES
