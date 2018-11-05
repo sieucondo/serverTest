@@ -101,6 +101,7 @@ CREATE TABLE `user` (
   `Dob` date DEFAULT NULL,
   `StoreId` int(11) NOT NULL,
   `Password` varchar(250) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+
   PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
@@ -111,6 +112,8 @@ CREATE TABLE `wifi` (
   `Password` varchar(128) DEFAULT NULL,
   PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
 -- insert
 INSERT INTO `fastorder`.`category` (`TypeId`,`Description`) VALUES 
 (1, 'Cà phê'),
