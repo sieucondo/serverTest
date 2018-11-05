@@ -2,7 +2,19 @@
 
 const util = require('util')
 const mysql = require('mysql')
-const db = require('../db')
+
+const db = require('./../db')
+
+module.exports = {
+    getOrderByStoreId: (req, res) => {
+        let sql = 'SET @StoreId = ?;\
+        CALL `GetOrderByStoreId`(@StoreId);';
+        db.query(sql, [req.params.storeId], (err, response) => {
+            if (err) throw err
+            res.json(response[1]);
+        })
+
+
 
 module.exports = {
     // hàm tạo và trả về billId vừa được tạo
@@ -22,5 +34,6 @@ module.exports = {
             if (err) throw err
             res.json({ message: 'Inserted successfully!' })
         })
+
     }
 }

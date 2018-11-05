@@ -71,7 +71,7 @@ BEGIN
     o.Id AS OrderId,
     o.DateCreate,
     o.Total,
-    o.Status
+    CASE WHEN o.Status = 0 THEN FALSE ELSE TRUE END AS `Status`
 	FROM
 		`order` o
 			JOIN
@@ -127,4 +127,39 @@ BEGIN
 	WHERE `Id` = (select ImageId from products where id = _ProductId);
 
 END$$
+DELIMITER ;
+
+
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `addUser`(
+	_UserName text,
+    _Fullname text,
+    _Address text,
+    _StoreId int,
+    _RoleId int,
+    _Password text
+)
+BEGIN
+	INSERT INTO `fastorder`.`user` (`UserName`, `Fullname`, `Address`, `StoreId`, `RoleId`, `Password`) VALUES
+(_UserName,  _Fullname,_Address, _StoreId ,  _RoleId , _Password)
+;
+END
+$$
+DELIMITER ;
+
+
+DELIMITER $$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getRoleAndStoreId`(
+	In _Username text,
+    In _Password text
+)
+BEGIN
+
+SELECT RoleType , s.Id as StoreId
+FROM fastorder.user u, fastorder.role r, store s
+where u.RoleId = r.Id and s.UserId = u.Id and u.UserName = _Username and u.Password = _Password;
+
+END
+$$
 DELIMITER ;
