@@ -13,10 +13,7 @@ module.exports = {
             if (err) throw err
             res.json(response[1]);
         })
-
-
-
-module.exports = {
+    },
     // hàm tạo và trả về billId vừa được tạo
     createOrder: (req, res) => {
         // let data = req.body;
