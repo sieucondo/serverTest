@@ -103,6 +103,12 @@ CREATE TABLE `user` (
   `Password` varchar(250) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+ALTER TABLE `fastorder`.`user` 
+CHANGE COLUMN `UserKey` `UserName` VARCHAR(32) NOT NULL ,
+CHANGE COLUMN `Password` `Password` VARCHAR(32) CHARACTER SET 'utf8' NOT NULL ;
+ALTER TABLE `fastorder`.`user` 
+ADD COLUMN `RoleId` INT(11) NOT NULL AFTER `StoreId`;
+
 
 CREATE TABLE `wifi` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
@@ -111,6 +117,13 @@ CREATE TABLE `wifi` (
   `Password` varchar(128) DEFAULT NULL,
   PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE `fastorder`.`role` (
+  `Id` INT(11) NOT NULL AUTO_INCREMENT,
+  `RoleType` INT(11) NOT NULL,
+  PRIMARY KEY (`Id`)
+)ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
 -- insert
 INSERT INTO `fastorder`.`category` (`TypeId`,`Description`) VALUES 
 (1, 'Cà phê'),
@@ -166,4 +179,15 @@ INSERT INTO `fastorder`.`type`(`Type`)VALUES
 ('Đồ Ăn')
 ;
 
-INSERT INTO `fastorder`.`wifi` (`StoreId`, `Name`, `Password`) VALUES ('1', 'MDA1', '88888888'), ('2', 'OKK1', '88888888'), ('3', 'JOLO', '88888888'), ('1', 'MDA2', '88888888'), ('2', 'OKK2', '88888888');
+INSERT INTO `fastorder`.`wifi` (`StoreId`, `Name`, `Password`) VALUES
+('1', 'MDA1', '88888888'),
+('2', 'OKK1', '88888888'),
+('3', 'JOLO', '88888888'),
+('1', 'MDA2', '88888888'),
+('2', 'OKK2', '88888888')
+;
+
+INSERT INTO `fastorder`.`user` (`UserName`, `Fullname`, `Address`, `Dob`, `StoreId`, `RoleId`, `Password`) VALUES
+('MDA1234', 'Mã Đại', '13 hải hồ', '1988-09-12', '1', '2', 'abcd1234'),
+('OKKK1234', 'Mã Đáo', '13 hàm nghi', '1987-03-12', '2', '2', 'abcd1234')
+;
