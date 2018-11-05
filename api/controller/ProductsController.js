@@ -114,5 +114,23 @@ module.exports = {
             if (err) throw err
             res.json(response[1]);
         })
+    },
+
+    insertProductsByStoreId: (req, res) => {        
+        let sql = 'SET      @StoreId        = ?;\
+                   SET      @ImgUrl         = ?;\
+                   SET      @ProductName    = ?;\
+                   SET      @ProductPrice   = ?;\
+                   SET      @Category       = ?;\
+        CALL `fastorder`.`AddNewProduct`(@StoreId,@ImgUrl,@ProductName,@ProductPrice,@Category)';
+        db.query(sql, [
+            req.params.storeId,
+            req.params.ImgUrl,
+            req.params.ProductName,
+            req.params.ProductPrice,
+            req.params.Category], (err, response) => {
+            if (err) throw err
+            res.json(response[1]);
+        })
     }
 }
