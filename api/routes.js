@@ -4,6 +4,7 @@ module.exports = function (app) {
   let wifiCtrl = require('./controller/WifiController');
   let tableCtrl = require('./controller/TableController');
   let billCtrl = require('./controller/BillController');
+  let orderCtrl = require('./controller/OrderController');
 
   // todoList Routes
   app.route('/products')
@@ -35,4 +36,7 @@ module.exports = function (app) {
 
   app.route('/table-status/:tableKey')
     .get(tableCtrl.getTableStatus);
+
+  app.route('/order/:storeId')
+    .get(orderCtrl.getOrderByStoreId);
 };
