@@ -120,7 +120,7 @@ CREATE TABLE `wifi` (
 
 CREATE TABLE `fastorder`.`role` (
   `Id` INT(11) NOT NULL AUTO_INCREMENT,
-  `RoleType` INT(11) NOT NULL,
+  `RoleType` VARCHAR(50) NOT NULL,
   PRIMARY KEY (`Id`)
 )ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
@@ -190,4 +190,9 @@ INSERT INTO `fastorder`.`wifi` (`StoreId`, `Name`, `Password`) VALUES
 INSERT INTO `fastorder`.`user` (`UserName`, `Fullname`, `Address`, `Dob`, `StoreId`, `RoleId`, `Password`) VALUES
 ('MDA1234', 'Mã Đại', '13 hải hồ', '1988-09-12', '1', '2', 'abcd1234'),
 ('OKKK1234', 'Mã Đáo', '13 hàm nghi', '1987-03-12', '2', '2', 'abcd1234')
+;
+
+INSERT INTO `fastorder`.`role` (`Id`, `RoleType`) VALUES
+('1', 'admin'),
+('2', 'owner')
 ;
