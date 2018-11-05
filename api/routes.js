@@ -40,7 +40,11 @@ module.exports = function (app) {
 
   app.route('/order/:storeId')
     .get(orderCtrl.getOrderByStoreId);
-    
-  app.route('/user/:Username&:Password')  
+
+  app.route('/user/:Username&:Password')
     .get(userCtrl.getRoleAndStoreId);
+
+  app.route('/products-store/:storeId')
+    .get(productsCtrl.getProductsByStoreId);
+
 };

@@ -10,8 +10,7 @@ module.exports = {
         CALL `GetOrderByStoreId`(@StoreId);';
         db.query(sql, [req.params.storeId], (err, response) => {
             if (err) throw err
-            console.log('1 :', response[1][0].Status[1]);
-            res.json(response[1][0].Status);
+            res.json(response[1]);
         })
     }
 }
