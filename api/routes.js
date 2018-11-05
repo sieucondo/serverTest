@@ -38,6 +38,7 @@ module.exports = function (app) {
   app.route('/table-status/:tableKey')
     .get(tableCtrl.getTableStatus);
 
+
   app.route('/order/:storeId')
     .get(orderCtrl.getOrderByStoreId);
 
@@ -46,5 +47,11 @@ module.exports = function (app) {
 
   app.route('/products-store/:storeId')
     .get(productsCtrl.getProductsByStoreId);
+
+    app.route('/createorder/:tableKey')
+    .get(orderCtrl.createOrder);
+
+  app.route('/createorderdetail/:OrderId&:ProductId&:Quantity')
+    .post(orderCtrl.addProductsToOrderDetail);
 
 };
