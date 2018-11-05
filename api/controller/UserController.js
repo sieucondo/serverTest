@@ -10,7 +10,7 @@ module.exports = {
         CALL `getRoleAndStoreId`(@UserName, @Password);';
         db.query(sql, [req.params.Username ,req.params.Password], (err, response) => {
             if (err) throw err
-            res.json(response)
+            res.json(response[2])
         })
     },
 
@@ -19,7 +19,7 @@ module.exports = {
         from user';
         db.query(sql, (err, response) => {
             if (err) throw err
-            res.json(response[2])
+            res.json(response)
         })
     }
 };
