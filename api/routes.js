@@ -50,20 +50,6 @@ module.exports = function (app) {
   app.route('/createorderdetail/:OrderId&:ProductId&:Quantity')
     .post(orderCtrl.addProductsToOrderDetail);
 
-  app.route('/user-getAllUser')
-    .get(userCtrl.getAllUser);
-
-
-  app.route('/user/:userId')
-    .get(userCtrl.getAllUserById);
-
-  app.route('/user/:Username&:FullName&:Address&:StoreId&:RoleId&:Password')
-    .post(userCtrl.addUser)
-
-    app.route('/store/getAllStore')
-    .get(storeCtrl.getAllStore);
-  // app.route('/addproduct/:StoreId&:ImgUrl&:ProductName&:ProductPrice&:TypeId')
-  //   .post(productsCtrl.insertProductsByStoreId);
   app.route('/addproduct/:StoreId&:ImgUrl&:ProductName&:ProductPrice&:TypeId')
     .post(productsCtrl.insertProductsByStoreId);
 
