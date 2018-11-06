@@ -70,7 +70,8 @@ BEGIN
     t.Id AS TableId,
     o.Id AS OrderId,
     o.DateCreate,
-    o.Total,
+    (SELECT SUM(price) AS Total FROM orderdetail od
+                WHERE od.orderid = o.Id) AS Total,
     CASE WHEN o.Status = 0 THEN FALSE ELSE TRUE END AS `Status`
 	FROM
 		`order` o
@@ -110,6 +111,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `UpdateProduct`(
 	_ProductId int,
     _ImgUrl text,
     _ProductName text,
+	_ProductPrice text,
     _IsAvailable int
 )
 BEGIN
@@ -129,7 +131,6 @@ BEGIN
 END$$
 DELIMITER ;
 
-
 DELIMITER $$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `addUser`(
 	_UserName text,
@@ -141,15 +142,12 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `addUser`(
 )
 BEGIN
 	INSERT INTO `fastorder`.`user` (`UserName`, `Fullname`, `Address`, `StoreId`, `RoleId`, `Password`) VALUES
-(_UserName,  _Fullname,_Address, _StoreId ,  _RoleId , _Password)
-;
-END
-$$
+	(_UserName,  _Fullname,_Address, _StoreId ,  _RoleId , _Password)
+	;
+END$$
 DELIMITER ;
 
-
 DELIMITER $$
-
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getRoleAndStoreId`(
 	In _Username text,
     In _Password text
@@ -170,6 +168,65 @@ BEGIN
 	 and u.Password like _Password
 	 ;
 
-END
-$$
+END$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `CreateNewOrder`(
+	_TableKey text
+)
+BEGIN
+	DECLARE _Curdate datetime DEFAULT current_time();
+	DECLARE _TableId int DEFAULT (select id from `table` where TableKey = _TableKey);
+    
+	INSERT INTO `fastorder`.`order` (`TableId`,`DateCreate`)VALUES
+	((select id from `table` where tablekey = _TableKey),
+		_Curdate
+    );
+    
+    select id as orderId from `order` where TableId=_TableId and DateCreate=_Curdate;
+
+END$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `AddToOrderDetail`(
+    IN _OrderId int,
+    IN _ProductId int,
+    IN _Quantity int
+)
+BEGIN
+	INSERT INTO `fastorder`.`orderdetail`(`OrderId`,`ProductId`,`ProductName`,`Quantity`,`Price`)VALUES
+	(	_OrderId,
+		_ProductId,
+	(select ProductName from products where id = _ProductId),
+		_Quantity,
+	(select ProductPrice from products where id = _ProductId) * _Quantity
+	);
+
+END$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `GetBillByStoreId`(
+	_StoreId int
+)
+BEGIN
+	SELECT 
+    s.Id AS StoreId,
+    t.Id AS TableId,
+    b.Id AS BillId,
+    b.DateCreate,
+    (SELECT SUM(price) AS Total FROM billdetail bd 
+		WHERE bd.billid = b.Id) AS Total,
+    CASE WHEN o.Status = 0 THEN FALSE ELSE TRUE END AS `Status`
+	FROM
+		`bill` b
+			JOIN
+		`table` t ON t.Id = b.TableId
+			JOIN
+		store s ON s.Id = t.StoreId
+	WHERE
+		s.Id = _StoreId;
+END$$
 DELIMITER ;

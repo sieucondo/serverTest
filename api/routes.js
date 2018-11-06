@@ -5,10 +5,11 @@ module.exports = function (app) {
   let billCtrl = require('./controller/BillController');
   let orderCtrl = require('./controller/OrderController');
   let userCtrl = require('./controller/UserController');
+  let storeCtrl = require('./controller/StoreController');
 
   // todoList Routes
-  app.route('/products')
-    .get(productsCtrl.get)
+  app.route('/products/:productId')
+    .get(productsCtrl.getProductById)
     .post(productsCtrl.store);
 
   app.route('/products/:tableKey')
@@ -18,7 +19,7 @@ module.exports = function (app) {
 
   app.route('/products-type/:tableKey&:typeId')
     .get(productsCtrl.getProductByType);
-    
+
   app.route('/products-all/:tableKey')
     .get(productsCtrl.getAllProduct);
 
@@ -49,11 +50,23 @@ module.exports = function (app) {
   app.route('/createorderdetail/:OrderId&:ProductId&:Quantity')
     .post(orderCtrl.addProductsToOrderDetail);
 
-
-    app.route('/addproduct/:StoreId&:ImgUrl&:ProductName&:ProductPrice&:Category')
+  // app.route('/addproduct/:StoreId&:ImgUrl&:ProductName&:ProductPrice&:TypeId')
+  //   .post(productsCtrl.insertProductsByStoreId);
+  app.route('/addProduct')
     .post(productsCtrl.insertProductsByStoreId);
+
   app.route('/table-status/:storeID')
     .get(tableCtrl.getAllTableKey);
 
+  app.route('/updateProduct')
+    .post(productsCtrl.updateProductsByStoreId);
 
+  app.route('/removeProduct/:productId')
+    .post(productsCtrl.removeProduct);
+
+  app.route('/store')
+    .get(storeCtrl.getAllStore);
+
+  app.route('/bill-info/:storeId')
+    .get(billCtrl.getBillByStoreId);
 };
