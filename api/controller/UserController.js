@@ -38,7 +38,7 @@ module.exports = {
         db.query(sql,[req.params.Username,req.params.FullName,
             req.params.Address,req.params.StoreId,req.params.RoleId,req.params.Password], (err, response) => {
             if (err) throw err
-            res.json(response)
+            res.send({ message: 'Delete success!' })
         })
     },
 };
