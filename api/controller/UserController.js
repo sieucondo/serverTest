@@ -16,9 +16,17 @@ module.exports = {
     },
 
     getAllUser: (req, res) => {
-        let sql = 'Select Id,UserName,Fullname,Address,Dob,StoreId,RoleId,Password\
-        from user';
+        let sql = 'SELECT * FROM fastorder.user u , store s\
+        where u.StoreId = s.Id';
         db.query(sql, (err, response) => {
+            if (err) throw err
+            res.json(response)
+        })
+    },
+
+    getAllUserById: (req, res) => {
+        let sql = 'SELECT * FROM fastorder.user u where u.Id = ?';
+        db.query(sql,[req.params.userId], (err, response) => {
             if (err) throw err
             res.json(response)
         })

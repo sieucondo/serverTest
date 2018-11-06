@@ -6,6 +6,7 @@ module.exports = function (app) {
   let billCtrl = require('./controller/BillController');
   let orderCtrl = require('./controller/OrderController');
   let userCtrl = require('./controller/UserController');
+  let storeCtrl = require('./controller/StoreController');
 
   // todoList Routes
   app.route('/products')
@@ -52,5 +53,18 @@ module.exports = function (app) {
 
   app.route('/createorderdetail/:OrderId&:ProductId&:Quantity')
     .post(orderCtrl.addProductsToOrderDetail);
+
+  app.route('/user/getAllUser')
+    .get(userCtrl.getAllUser);
+
+
+  app.route('/user/:userId')
+    .get(userCtrl.getAllUserById);
+
+  app.route('/user/:Username&:FullName&:Address&:StoreId&:RoleId&:Password')
+    .post(userCtrl.addUser)
+
+    app.route('/store/getAllStore')
+    .get(storeCtrl.getAllStore);
 
 };
