@@ -24,7 +24,7 @@ module.exports = {
             ;'
         db.query(sql, [req.params.tableKey], (err, response) => {
             if (err) throw err
-            res.json({IsAvailable: response[0].IsAvailable[0]})
+            res.json({ IsAvailable: response[0].IsAvailable[0] })
         })
     },
     // lấy table theo id quán
@@ -37,6 +37,34 @@ module.exports = {
         db.query(sql, [req.params.storeID], (err, response) => {
             if (err) throw err
             res.json(response)
+        })
+    },
+    addNewTable: (req, res) => {
+        var sId = req.params.StoreId;
+        var tk = req.params.TableKey;
+        var tn = req.params.TableName;
+
+        let sql = ' SET @StoreId = ?;\
+                    SET @TableKey = ?;\
+                    SET @TableName = ?;\
+        CALL `AddNewTable`(@StoreId, @TableKey, @TableName);';
+        db.query(sql, [
+            sId,
+            tk,
+            tn], (err, response) => {
+                if (err) throw err
+                res.json({ message: 'Inserted successfully!' })
+            })
+    },
+    updateTable: (req, res) => {
+        var tn = req.params.tableName;
+        var tId = req.params.tableId
+        let sql = 'UPDATE `fastorder`.`table`\
+            SET `TableName` = ? \
+            WHERE `Id` = ?;';
+        db.query(sql, [tn.toString(), tId], (err, response) => {
+            if (err) throw err
+            res.json({ message: 'Update table successfully!' })
         })
     }
 }

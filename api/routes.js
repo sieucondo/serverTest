@@ -88,4 +88,10 @@ module.exports = function (app) {
 
   app.route('/update-store/:location&:phoneNumber&:storeName&:province&:storeId')
     .post(storeCtrl.updateStore);
+
+  app.route('/add-table/:StoreId&:TableKey&:TableName')
+    .post(tableCtrl.addNewTable);
+
+  app.route('/update-table/:tableName&:tableId')
+    .post(tableCtrl.updateTable);
 };
