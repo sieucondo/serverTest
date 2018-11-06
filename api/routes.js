@@ -98,4 +98,7 @@ module.exports = function (app) {
   app.route('/tablelist/:storeID')
     .get(tableCtrl.getTablesByStoreID);
 
+    app.route('/user-getalluser')
+    .get(userCtrl.getAllUser);
+
 };
