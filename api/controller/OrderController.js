@@ -47,7 +47,8 @@ module.exports = {
             JOIN `order` o ON od.OrderId = o.Id\
             JOIN `table` t ON o.TableId = t.Id\
             JOIN store s ON s.Id = t.StoreId\
-        WHERE s.Id = ?;';
+        WHERE s.Id = ?\
+        ORDER BY o.Id desc;';
         db.query(sql, [req.params.storeId], (err, response) => {
             if (err) throw err
             res.json(response);
