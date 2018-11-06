@@ -210,3 +210,27 @@ BEGIN
 
 END$$
 DELIMITER ;
+
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `GetBillByStoreId`(
+	_StoreId int
+)
+BEGIN
+	SELECT 
+    s.Id AS StoreId,
+    t.Id AS TableId,
+    b.Id AS BillId,
+    b.DateCreate,
+    b.Total,
+    CASE WHEN o.Status = 0 THEN FALSE ELSE TRUE END AS `Status`
+FROM
+    `bill` b
+        JOIN
+    `table` t ON t.Id = b.TableId
+        JOIN
+    store s ON s.Id = t.StoreId
+WHERE
+    s.Id = _StoreId
+;
+END$$
+DELIMITER ;

@@ -66,4 +66,7 @@ module.exports = function (app) {
 
   app.route('/store')
     .get(storeCtrl.getAllStore);
+
+  app.route('/bill-info/:storeId')
+    .get(billCtrl.getBillByStoreId);
 };
