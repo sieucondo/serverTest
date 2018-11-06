@@ -28,6 +28,7 @@ module.exports = {
         let sql = 'SELECT \
             b.Id,\
             b.TableId,\
+            t.TableName,\
             b.DateCreate,\
             (SELECT \
                     SUM(price) AS Total FROM billdetail bd\

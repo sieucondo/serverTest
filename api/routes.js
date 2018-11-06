@@ -64,7 +64,7 @@ module.exports = function (app) {
     .get(storeCtrl.getAllStore);
   // app.route('/addproduct/:StoreId&:ImgUrl&:ProductName&:ProductPrice&:TypeId')
   //   .post(productsCtrl.insertProductsByStoreId);
-  app.route('/addProduct')
+  app.route('/addproduct/:StoreId&:ImgUrl&:ProductName&:ProductPrice&:TypeId')
     .post(productsCtrl.insertProductsByStoreId);
 
   app.route('/table-status/:storeID')
@@ -87,4 +87,19 @@ module.exports = function (app) {
 
   app.route('/store-add/:StoreName&:PhoneNumber&:Location&:Province')
     .post(storeCtrl.addNewStore);
+
+  app.route('/removeUser/:userId')
+    .post(userCtrl.removeUser);
+
+  app.route('/removeStore/:storeId')
+    .post(storeCtrl.removeStore);
+
+  app.route('/order-info/:storeId')
+    .get(orderCtrl.getOrderDetailByStoreId);
+
+  app.route('/update-user/:fullName&:address&:userId')
+    .post(userCtrl.updateUser);
+
+  app.route('/update-store/:location&:phoneNumber&:storeName&:province&:storeId')
+    .post(storeCtrl.updateStore);
 };

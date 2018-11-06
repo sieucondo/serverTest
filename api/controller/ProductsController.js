@@ -71,12 +71,14 @@ module.exports = {
                     ty.`Type`,\
                     t.TableName,\
                     s.StoreName,\
-                    p.ProductPrice\
+                    p.ProductPrice,\
+                    i.ImgKey\
             FROM\
                 `table` t\
             JOIN store s ON t.storeid = s.id\
             JOIN products p ON s.id = p.storeid\
             JOIN `type` ty ON ty.id = p.typeid\
+            JOIN `image` i ON i.Id = p.ImageId\
             WHERE\
                     t.tablekey = ? AND p.IsDeleted = 0 AND p.IsAvailable = 1) a\
         WHERE\
@@ -125,28 +127,27 @@ module.exports = {
     },
     // Thêm products mới vô db
     insertProductsByStoreId: (req, res) => {
-        var storeId = req.body[0].StoreId.toString();
-        var img = req.body[0].ImgUrl.toString();
-        var name = req.body[0].ProductName.toString();
-        var price = req.body[0].ProductPrice.toString();
-        var typeId = req.body[0].TypeId.toString();
-        console.log('asdsad : ', req.body[0].ImgUrl.toString());
-
         let sql = 'SET      @StoreId        = ?;\
                    SET      @ImgUrl         = ?;\
                    SET      @ProductName    = ?;\
                    SET      @ProductPrice   = ?;\
-                   SET      @TypeId       = ?;\
-        CALL `fastorder`.`AddNewProduct`(@StoreId,@ImgUrl,@ProductName,@ProductPrice,@TypeId)';
+                   SET      @TypeId         = ?;\
+                   \
+        CALL `fastorder`.`AddNewProduct`(\
+            @StoreId\
+            ,@ImgUrl\
+            ,@ProductName\
+            ,@ProductPrice\
+            ,@TypeId)';
         db.query(sql, [
-            storeId,
-            img,
-            name,
-            price,
-            typeId
-        ], (err, response) => {
+            req.params.StoreId,
+            req.params.ImgUrl,
+            req.params.ProductName,
+            req.params.ProductPrice,
+            req.params.TypeId], (err, response) => {
             if (err) throw err
-            console.log(JSON.stringify(req.body.ImgUrl))
+            res.json(response);
+            res.message = "Success"
             res.json({ message: 'Inserted successfully!' })
         })
     },
@@ -180,8 +181,7 @@ module.exports = {
     // delete product - chuyển IsDelete = 0
     removeProduct: (req, res) => {
         let sql = 'UPDATE `fastorder`.`products`\
-            SET\
-            `IsDeleted` = 1\
+            SET `IsDeleted` = 1\
             WHERE `Id` = ?;'
         db.query(sql, [req.params.productId], (err, response) => {
             if (err) throw err

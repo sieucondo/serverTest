@@ -35,6 +35,31 @@ module.exports = {
             if (err) throw err
             res.json({ message: 'Inserted successfully!' })
         })
-    }
+    },
+    removeStore: (req, res) => {
+        let sql = 'UPDATE `fastorder`.`store` SET\
+            `IsDeleted` = 1\
+            WHERE `Id` = ?;'
+        db.query(sql, [req.params.storeId], (err, response) => {
+            if (err) throw err
+            res.json({ message: 'Remove user successfully!' })
+        })
+    },
+    updateStore: (req, res) => {
+        var location = req.params.location;
+        var pn = req.params.phoneNumber;
+        var sn = req.params.storeName;
+        var province = req.params.province;
+        var sId = req.params.storeId;
+        let sql = 'UPDATE `fastorder`.`store`SET\
+                `Location` = ?,\
+                `StoreName` = ?,\
+                `PhoneNumber` = ?,\
+                `Province` = ?\
+            WHERE `Id` = ?;';
+        db.query(sql, [location, pn, sn, province, sId], (err, response) => {
+            if (err) throw err
+            res.json({ message: 'Update user successfully!' })
+        })
+    }   
 }
-
