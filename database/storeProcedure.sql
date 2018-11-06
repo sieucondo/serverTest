@@ -246,3 +246,23 @@ BEGIN
 
 END$$
 DELIMITER ;
+
+DROP procedure IF EXISTS `AddNewTable`;
+
+DELIMITER $$
+USE `fastorder`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `AddNewTable`(
+    _StoreId int,
+	_TableKey text,
+    _TableName text
+)
+BEGIN
+	INSERT INTO `fastorder`.`table`( `TableKey`, `StoreId`, `TableName`) VALUES
+	(
+    _TableKey, _StoreId, _TableName
+    );
+
+END$$
+
+DELIMITER ;
+
