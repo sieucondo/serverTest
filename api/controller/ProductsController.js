@@ -146,33 +146,27 @@ module.exports = {
             req.params.ProductPrice,
             req.params.TypeId], (err, response) => {
             if (err) throw err
-            res.json(response);
-            res.message = "Success"
             res.json({ message: 'Inserted successfully!' })
         })
     },
     //UpdateProduct đã có
     updateProductsByStoreId: (req, res) => {
-        var productId = req.params.ProductId;
-        var img = req.params.ImgUrl;
-        var name = req.params.ProductName;
-        var price = req.params.ProductPrice;
-        var isAvailable = req.params.IsAvailable;
-        console.log('asdsad : ', req.params.ImgUrl);
 
-        let sql = 'SET      @ProductId        = ?;\
+        let sql = 'SET      @ProductId      = ?;\
                    SET      @ImgUrl         = ?;\
                    SET      @ProductName    = ?;\
                    SET      @ProductPrice   = ?;\
-                   SET      @IsAvailable       = ?;\
-        CALL `fastorder`.`UpdateProduct`(@ProductId, @ImgUrl, @ProductName, @ProductPrice, @IsAvailable);\
+                   SET      @IsAvailable    = ?;\
+                   SET      @TypeId         = ?;\
+        CALL `fastorder`.`UpdateProduct`(@ProductId, @ImgUrl, @ProductName, @ProductPrice, @IsAvailable,@TypeId);\
                    ';
         db.query(sql, [
-            productId,
-            img,
-            name,
-            price,
-            isAvailable
+            req.params.ProductId,
+            req.params.ImgUrl,
+            req.params.ProductName,
+            req.params.ProductPrice,    
+            req.params.IsAvailable,
+            req.params.TypeId
         ], (err, response) => {
             if (err) throw err
             res.json({ message: 'Update successfully!' })

@@ -29,14 +29,12 @@ module.exports = {
     },
     // lấy table theo id quán
     getTablesByStoreID: (req, res) => {
-        let sql = 'SELECT t.Id AS TableId, s.Id AS StoreId, t.TableKey, t.TableName, s.StoreName\
-            FROM `table` t\
-            JOIN store s ON s.Id = t.StoreId\
-            WHERE t.TableKey = ?\
-            ;'
+        let sql = 'SET      @StoreId      = ?;\
+        CALL `fastorder`.`TableGetTableByStoreId`(@StoreId);\
+                   ';
         db.query(sql, [req.params.storeID], (err, response) => {
             if (err) throw err
-            res.json(response)
+            res.json(response[1]);
         })
     }
 }

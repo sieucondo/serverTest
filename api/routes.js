@@ -56,7 +56,7 @@ module.exports = function (app) {
   app.route('/table-status/:storeID')
     .get(tableCtrl.getAllTableKey);
 
-  app.route('/updateProduct/:ProductId&:ImgUrl&:ProductName&:ProductPrice&:IsAvailable')
+  app.route('/updateProduct/:ProductId&:ImgUrl&:ProductName&:ProductPrice&:IsAvailable&:TypeId')
     .post(productsCtrl.updateProductsByStoreId);
 
   app.route('/removeProduct/:productId')
@@ -88,4 +88,8 @@ module.exports = function (app) {
 
   app.route('/update-store/:location&:phoneNumber&:storeName&:province&:storeId')
     .post(storeCtrl.updateStore);
+
+    app.route('/tablelist/:storeID')
+    .get(tableCtrl.getTablesByStoreID);
+
 };
