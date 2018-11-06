@@ -153,12 +153,12 @@ module.exports = {
     },
     //UpdateProduct đã có
     updateProductsByStoreId: (req, res) => {
-        var productId = req.body[0].ProductId.toString();
-        var img = req.body[0].ImgUrl.toString();
-        var name = req.body[0].ProductName.toString();
-        var price = req.body[0].ProductPrice.toString();
-        var isAvailable = req.body[0].IsAvailable.toString();
-        console.log('asdsad : ', req.body[0].ImgUrl.toString());
+        var productId = req.params.ProductId;
+        var img = req.params.ImgUrl;
+        var name = req.params.ProductName;
+        var price = req.params.ProductPrice;
+        var isAvailable = req.params.IsAvailable;
+        console.log('asdsad : ', req.params.ImgUrl);
 
         let sql = 'SET      @ProductId        = ?;\
                    SET      @ImgUrl         = ?;\
@@ -175,15 +175,13 @@ module.exports = {
             isAvailable
         ], (err, response) => {
             if (err) throw err
-            console.log(JSON.stringify(req.body.ImgUrl))
             res.json({ message: 'Update successfully!' })
         })
     },
     // delete product - chuyển IsDelete = 0
     removeProduct: (req, res) => {
         let sql = 'UPDATE `fastorder`.`products`\
-            SET\
-            `IsDeleted` = 1\
+            SET `IsDeleted` = 1\
             WHERE `Id` = ?;'
         db.query(sql, [req.params.productId], (err, response) => {
             if (err) throw err

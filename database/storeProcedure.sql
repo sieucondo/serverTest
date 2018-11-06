@@ -230,3 +230,19 @@ BEGIN
 		s.Id = _StoreId;
 END$$
 DELIMITER ;
+
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `AddNewStore`(
+	_StoreName text,
+    _PhoneNumber text,
+    _Location text,
+    _Province text
+)
+BEGIN
+	INSERT INTO `fastorder`.`store` (`StoreKey`,`Location`, `StoreName`, `PhoneNumber`, `Province`) VALUES
+	(
+    '', _Location, _StoreName, _PhoneNumber, _Province
+    );
+
+END$$
+DELIMITER ;
