@@ -174,9 +174,9 @@ module.exports = {
     removeProduct: (req, res) => {
         let sql = 'UPDATE `fastorder`.`products`\
             SET\
-            `IsDeleted` = ?\
+            `IsDeleted` = 1\
             WHERE `Id` = ?;'
-        db.query(sql, [parseInt(req.params.IsDeleted), req.params.productId], (err, response) => {
+        db.query(sql, [req.params.productId], (err, response) => {
             if (err) throw err
             res.json({ message: 'Remove successfully!' })
         })

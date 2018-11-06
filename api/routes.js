@@ -60,7 +60,7 @@ module.exports = function (app) {
   app.route('/updateProduct')
     .post(productsCtrl.updateProductsByStoreId);
 
-  app.route('/removeProduct/:IsDeleted&:productId')
+  app.route('/removeProduct/:productId')
     .post(productsCtrl.removeProduct);
 
 };
