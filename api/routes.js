@@ -101,3 +101,7 @@ module.exports = function (app) {
     app.route('/addtable/:StoreId&:TableKey&:TableName')
     .post(tableCtrl.addNewTable);
 };  
+    app.route('/user-getalluser')
+    .get(userCtrl.getAllUser);
+
+};
