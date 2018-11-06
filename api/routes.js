@@ -50,8 +50,9 @@ module.exports = function (app) {
     .post(orderCtrl.addProductsToOrderDetail);
 
 
-    app.route('/addproduct/:StoreId&:ImgUrl&:ProductName&:ProductPrice&:Category')
+  app.route('/addproduct/:StoreId&:ImgUrl&:ProductName&:ProductPrice&:TypeId')
     .post(productsCtrl.insertProductsByStoreId);
+
   app.route('/table-status/:storeID')
     .get(tableCtrl.getAllTableKey);
 

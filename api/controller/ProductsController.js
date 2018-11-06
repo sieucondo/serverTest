@@ -121,16 +121,23 @@ module.exports = {
                    SET      @ImgUrl         = ?;\
                    SET      @ProductName    = ?;\
                    SET      @ProductPrice   = ?;\
-                   SET      @Category       = ?;\
-        CALL `fastorder`.`AddNewProduct`(@StoreId,@ImgUrl,@ProductName,@ProductPrice,@Category)';
+                   SET      @TypeId         = ?;\
+                   \
+        CALL `fastorder`.`AddNewProduct`(\
+            @StoreId\
+            ,@ImgUrl\
+            ,@ProductName\
+            ,@ProductPrice\
+            ,@TypeId)';
         db.query(sql, [
-            req.params.storeId,
+            req.params.StoreId,
             req.params.ImgUrl,
             req.params.ProductName,
             req.params.ProductPrice,
-            req.params.Category], (err, response) => {
+            req.params.TypeId], (err, response) => {
             if (err) throw err
-            res.json(response[1]);
+            res.json(response);
+            res.message = "Success"
         })
     }
 }

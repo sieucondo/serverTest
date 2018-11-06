@@ -162,7 +162,7 @@ INSERT INTO `fastorder`.`image` (`Description`,`ImgPath`) VALUES
 ('cơm chiên dương châu', 'https://imgur.com/8Iikj46.jpg')
 ;
 
-INSERT INTO `fastorder`.`products`(`StoreId`,`ImageId`,`ProductName`,`ProductPrice`,`Type`)VALUES
+INSERT INTO `fastorder`.`products`(`StoreId`,`ImageId`,`ProductName`,`ProductPrice`,`TypeId`)VALUES
 ( 1, 1, 'Cà Phê Đen', 12, 1),
 ( 1, 2, 'Cà Phê Sữa', 15, 1),
 ( 1, 4, 'Cocacola', 10, 1),
