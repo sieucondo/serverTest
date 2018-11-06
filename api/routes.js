@@ -8,8 +8,8 @@ module.exports = function (app) {
   let storeCtrl = require('./controller/StoreController');
 
   // todoList Routes
-  app.route('/products')
-    .get(productsCtrl.get)
+  app.route('/products/:productId')
+    .get(productsCtrl.getProductById)
     .post(productsCtrl.store);
 
   app.route('/products/:tableKey')
@@ -76,4 +76,12 @@ module.exports = function (app) {
   app.route('/removeProduct/:productId')
     .post(productsCtrl.removeProduct);
 
+  app.route('/store')
+    .get(storeCtrl.getAllStore);
+
+  app.route('/bill-info/:storeId')
+    .get(billCtrl.getBillByStoreId);
+
+  app.route('/user-add/:Username&:FullName&:Address&:StoreId&:RoleId&:Password')
+    .post(userCtrl.addUser);
 };

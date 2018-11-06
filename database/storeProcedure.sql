@@ -70,7 +70,8 @@ BEGIN
     t.Id AS TableId,
     o.Id AS OrderId,
     o.DateCreate,
-    o.Total,
+    (SELECT SUM(price) AS Total FROM orderdetail od
+                WHERE od.orderid = o.Id) AS Total,
     CASE WHEN o.Status = 0 THEN FALSE ELSE TRUE END AS `Status`
 	FROM
 		`order` o
@@ -130,7 +131,6 @@ BEGIN
 END$$
 DELIMITER ;
 
-
 DELIMITER $$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `addUser`(
 	_UserName text,
@@ -142,15 +142,12 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `addUser`(
 )
 BEGIN
 	INSERT INTO `fastorder`.`user` (`UserName`, `Fullname`, `Address`, `StoreId`, `RoleId`, `Password`) VALUES
-(_UserName,  _Fullname,_Address, _StoreId ,  _RoleId , _Password)
-;
-END
-$$
+	(_UserName,  _Fullname,_Address, _StoreId ,  _RoleId , _Password)
+	;
+END$$
 DELIMITER ;
 
-
 DELIMITER $$
-
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getRoleAndStoreId`(
 	In _Username text,
     In _Password text
@@ -171,8 +168,7 @@ BEGIN
 	 and u.Password like _Password
 	 ;
 
-END
-$$
+END$$
 DELIMITER ;
 
 DELIMITER $$
@@ -208,5 +204,29 @@ BEGIN
 	(select ProductPrice from products where id = _ProductId) * _Quantity
 	);
 
+END$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `GetBillByStoreId`(
+	_StoreId int
+)
+BEGIN
+	SELECT 
+    s.Id AS StoreId,
+    t.Id AS TableId,
+    b.Id AS BillId,
+    b.DateCreate,
+    (SELECT SUM(price) AS Total FROM billdetail bd 
+		WHERE bd.billid = b.Id) AS Total,
+    CASE WHEN o.Status = 0 THEN FALSE ELSE TRUE END AS `Status`
+	FROM
+		`bill` b
+			JOIN
+		`table` t ON t.Id = b.TableId
+			JOIN
+		store s ON s.Id = t.StoreId
+	WHERE
+		s.Id = _StoreId;
 END$$
 DELIMITER ;

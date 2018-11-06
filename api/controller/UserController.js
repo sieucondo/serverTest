@@ -16,8 +16,9 @@ module.exports = {
     },
 
     getAllUser: (req, res) => {
-        let sql = 'SELECT * FROM fastorder.user u , store s\
-        where u.StoreId = s.Id';
+        let sql = 'Select u.Id,u.UserName,u.Fullname,u.Address,u.Dob,u.StoreId,u.RoleId,u.Password, s.StoreName\
+        from user u, store s\
+        where u.StoreId = s.Id and IsDeleted=0';
         db.query(sql, (err, response) => {
             if (err) throw err
             res.json(response)
@@ -33,12 +34,27 @@ module.exports = {
     },
 
     addUser :(req, res) => {
-        let sql = 'SET @UserName = ? ;SET @Fullname = ?;SET @Address = ?;SET @StoreId = ?;SET @RoleId = ?;SET @Password = ?;\
+        var un = req.params.Username;
+        var dn = req.params.FullName;
+        var add = req.params.Address;
+        var sId = req.params.StoreId;
+        var rId = req.params.RoleId;
+        var pass = req.params.Password;
+
+        let sql = ' SET @UserName = ? ;\
+                    SET @Fullname = ?;\
+                    SET @Address = ?;\
+                    SET @StoreId = ?;\
+                    SET @RoleId = ?;\
+                    SET @Password = ?;\
         CALL `addUser`(@UserName ,@Fullname ,@Address ,@StoreId ,@RoleId,@Password)';
-        db.query(sql,[req.params.Username,req.params.FullName,
-            req.params.Address,req.params.StoreId,req.params.RoleId,req.params.Password], (err, response) => {
+        db.query(sql,[un, dn,add, sId, rId, pass], (err, response) => {
             if (err) throw err
+<<<<<<< HEAD
             res.send({ message: 'Delete success!' })
+=======
+            res.json({message: 'Inserted success '})
+>>>>>>> 8a39d66ec6e15d9b14b553ecee6e133314fafa95
         })
     },
 };
