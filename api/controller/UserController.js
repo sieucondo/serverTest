@@ -50,11 +50,7 @@ module.exports = {
         CALL `addUser`(@UserName ,@Fullname ,@Address ,@StoreId ,@RoleId,@Password)';
         db.query(sql,[un, dn,add, sId, rId, pass], (err, response) => {
             if (err) throw err
-<<<<<<< HEAD
-            res.send({ message: 'Delete success!' })
-=======
             res.json({message: 'Inserted success '})
->>>>>>> 8a39d66ec6e15d9b14b553ecee6e133314fafa95
         })
     },
 };
