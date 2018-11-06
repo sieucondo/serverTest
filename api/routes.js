@@ -72,4 +72,7 @@ module.exports = function (app) {
 
   app.route('/user-add/:Username&:FullName&:Address&:StoreId&:RoleId&:Password')
     .post(userCtrl.addUser);
+
+  app.route('/store-add/:StoreName&:PhoneNumber&:Location&:Province')
+    .post(storeCtrl.addNewStore);
 };
