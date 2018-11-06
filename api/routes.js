@@ -56,7 +56,6 @@ module.exports = function (app) {
   app.route('/table-status/:storeID')
     .get(tableCtrl.getAllTableKey);
 
-
   app.route('/updateProduct/:ProductId&:ImgUrl&:ProductName&:ProductPrice&:IsAvailable&:TypeId')
     .post(productsCtrl.updateProductsByStoreId);
 
@@ -80,4 +79,7 @@ module.exports = function (app) {
 
   app.route('/order-info/:storeId')
     .get(orderCtrl.getOrderDetailByStoreId);
+
+    app.route('/tablelist/:storeID')
+    .get(tableCtrl.getTablesByStoreID);
 };
