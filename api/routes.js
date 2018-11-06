@@ -79,4 +79,10 @@ module.exports = function (app) {
 
   app.route('/order-info/:storeId')
     .get(orderCtrl.getOrderDetailByStoreId);
+
+  app.route('/update-user/:fullName&:address&:userId')
+    .post(userCtrl.updateUser);
+
+  app.route('/update-store/:location&:phoneNumber&:storeName&:province&:storeId')
+    .post(storeCtrl.updateStore);
 };
