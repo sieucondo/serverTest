@@ -70,7 +70,7 @@ module.exports = function (app) {
   app.route('/table-status/:storeID')
     .get(tableCtrl.getAllTableKey);
 
-  app.route('/updateProduct')
+  app.route('/updateProduct/:ProductId&:ImgUrl&:ProductName&:ProductPrice&:IsAvailable')
     .post(productsCtrl.updateProductsByStoreId);
 
   app.route('/removeProduct/:productId')
@@ -84,4 +84,7 @@ module.exports = function (app) {
 
   app.route('/user-add/:Username&:FullName&:Address&:StoreId&:RoleId&:Password')
     .post(userCtrl.addUser);
+
+  app.route('/store-add/:StoreName&:PhoneNumber&:Location&:Province')
+    .post(storeCtrl.addNewStore);
 };
