@@ -136,17 +136,24 @@ module.exports = {
                    SET      @ImgUrl         = ?;\
                    SET      @ProductName    = ?;\
                    SET      @ProductPrice   = ?;\
-                   SET      @TypeId       = ?;\
-        CALL `fastorder`.`AddNewProduct`(@StoreId,@ImgUrl,@ProductName,@ProductPrice,@TypeId)';
+
+                   SET      @TypeId         = ?;\
+                   \
+        CALL `fastorder`.`AddNewProduct`(\
+            @StoreId\
+            ,@ImgUrl\
+            ,@ProductName\
+            ,@ProductPrice\
+            ,@TypeId)';
         db.query(sql, [
-            storeId,
-            img,
-            name,
-            price,
-            typeId
-        ], (err, response) => {
+            req.params.StoreId,
+            req.params.ImgUrl,
+            req.params.ProductName,
+            req.params.ProductPrice,
+            req.params.TypeId], (err, response) => {
             if (err) throw err
-            console.log(JSON.stringify(req.body.ImgUrl))
+            res.json(response);
+            res.message = "Success"
             res.json({ message: 'Inserted successfully!' })
         })
     },
