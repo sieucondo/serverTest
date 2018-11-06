@@ -110,6 +110,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `UpdateProduct`(
 	_ProductId int,
     _ImgUrl text,
     _ProductName text,
+	_ProductPrice text,
     _IsAvailable int
 )
 BEGIN

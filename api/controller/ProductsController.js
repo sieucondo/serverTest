@@ -115,22 +115,70 @@ module.exports = {
             res.json(response[1]);
         })
     },
+    // Thêm products mới vô db
+    insertProductsByStoreId: (req, res) => {
+        var storeId = req.body[0].StoreId.toString();
+        var img = req.body[0].ImgUrl.toString();
+        var name = req.body[0].ProductName.toString();
+        var price = req.body[0].ProductPrice.toString();
+        var typeId = req.body[0].TypeId.toString();
+        console.log('asdsad : ', req.body[0].ImgUrl.toString());
 
-    insertProductsByStoreId: (req, res) => {        
         let sql = 'SET      @StoreId        = ?;\
                    SET      @ImgUrl         = ?;\
                    SET      @ProductName    = ?;\
                    SET      @ProductPrice   = ?;\
-                   SET      @Category       = ?;\
-        CALL `fastorder`.`AddNewProduct`(@StoreId,@ImgUrl,@ProductName,@ProductPrice,@Category)';
+                   SET      @TypeId       = ?;\
+        CALL `fastorder`.`AddNewProduct`(@StoreId,@ImgUrl,@ProductName,@ProductPrice,@TypeId)';
         db.query(sql, [
-            req.params.storeId,
-            req.params.ImgUrl,
-            req.params.ProductName,
-            req.params.ProductPrice,
-            req.params.Category], (err, response) => {
+            storeId,
+            img,
+            name,
+            price,
+            typeId
+        ], (err, response) => {
             if (err) throw err
-            res.json(response[1]);
+            console.log(JSON.stringify(req.body.ImgUrl))
+            res.json({ message: 'Inserted successfully!' })
+        })
+    },
+    //UpdateProduct đã có
+    updateProductsByStoreId: (req, res) => {
+        var productId = req.body[0].ProductId.toString();
+        var img = req.body[0].ImgUrl.toString();
+        var name = req.body[0].ProductName.toString();
+        var price = req.body[0].ProductPrice.toString();
+        var isAvailable = req.body[0].IsAvailable.toString();
+        console.log('asdsad : ', req.body[0].ImgUrl.toString());
+
+        let sql = 'SET      @ProductId        = ?;\
+                   SET      @ImgUrl         = ?;\
+                   SET      @ProductName    = ?;\
+                   SET      @ProductPrice   = ?;\
+                   SET      @IsAvailable       = ?;\
+        CALL `fastorder`.`UpdateProduct`(@ProductId, @ImgUrl, @ProductName, @ProductPrice, @IsAvailable);\
+                   ';
+        db.query(sql, [
+            productId,
+            img,
+            name,
+            price,
+            isAvailable
+        ], (err, response) => {
+            if (err) throw err
+            console.log(JSON.stringify(req.body.ImgUrl))
+            res.json({ message: 'Update successfully!' })
+        })
+    },
+    // delete product - chuyển IsDelete = 0
+    removeProduct: (req, res) => {
+        let sql = 'UPDATE `fastorder`.`products`\
+            SET\
+            `IsDeleted` = ?\
+            WHERE `Id` = ?;'
+        db.query(sql, [parseInt(req.params.IsDeleted), req.params.productId], (err, response) => {
+            if (err) throw err
+            res.json({ message: 'Remove successfully!' })
         })
     }
-}
+};

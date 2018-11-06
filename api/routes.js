@@ -18,7 +18,7 @@ module.exports = function (app) {
 
   app.route('/products-type/:tableKey&:typeId')
     .get(productsCtrl.getProductByType);
-    
+
   app.route('/products-all/:tableKey')
     .get(productsCtrl.getAllProduct);
 
@@ -49,11 +49,18 @@ module.exports = function (app) {
   app.route('/createorderdetail/:OrderId&:ProductId&:Quantity')
     .post(orderCtrl.addProductsToOrderDetail);
 
-
-    app.route('/addproduct/:StoreId&:ImgUrl&:ProductName&:ProductPrice&:Category')
+  // app.route('/addproduct/:StoreId&:ImgUrl&:ProductName&:ProductPrice&:TypeId')
+  //   .post(productsCtrl.insertProductsByStoreId);
+  app.route('/addProduct')
     .post(productsCtrl.insertProductsByStoreId);
+
   app.route('/table-status/:storeID')
     .get(tableCtrl.getAllTableKey);
 
+  app.route('/updateProduct')
+    .post(productsCtrl.updateProductsByStoreId);
+
+  app.route('/removeProduct/:IsDeleted&:productId')
+    .post(productsCtrl.removeProduct);
 
 };
