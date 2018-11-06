@@ -40,7 +40,8 @@ module.exports = {
             t.TableName,\
             od.ProductName,\
             od.Quantity,\
-            od.Price\
+            od.Price,\
+            o.DateCreate\
         FROM\
             orderdetail od\
             JOIN `order` o ON od.OrderId = o.Id\
