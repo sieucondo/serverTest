@@ -19,16 +19,16 @@ INSERT INTO `table` VALUES
 INSERT INTO `type` VALUES (1,'Đồ Uống'),(2,'Đồ Ăn');
 
 INSERT INTO `image` VALUES 
-(1,'cà phê đen','https://imgur.com/4bxrTaH.jpg',NULL),
-(2,'cà phê sữa đá','https://imgur.com/rQbXVNV.jpg',NULL),
-(3,'tôm hùm','https://imgur.com/47mz8Ds.jpg',NULL),
-(4,'tôm càng xanh','https://imgur.com/FK0GNF4.jpg',NULL),
-(5,'bia heiniken','https://imgur.com/jVAknsr.jpg',NULL),
-(6,'strong bow','https://imgur.com/EgV5H69.jpg',NULL),
-(7,'cocacola','https://imgur.com/k5lnu1r.jpg',NULL),
-(8,'cơm chiên dương châu','https://imgur.com/8Iikj46.jpg',NULL),
-(23,'','https://translate.google.com/?hl=vi','2018-11-06 01:10:38'),
-(24,'','akjshdskajhd','2018-11-06 16:14:28');
+(1,'cà phê đen',	'4bxrTaH',NULL),
+(2,'cà phê sữa đá',	'rQbXVNV',NULL),
+(3,'tôm hùm',		'47mz8Ds',NULL),
+(4,'tôm càng xanh',	'FK0GNF4',NULL),
+(5,'bia heiniken',	'jVAknsr',NULL),
+(6,'strong bow',	'EgV5H69',NULL),
+(7,'cocacola',		'k5lnu1r',NULL),
+(8,'cơm chiên dương châu','8Iikj46',NULL),
+(23,'cocacola','8Iikj46','2018-11-06 01:10:38'),
+(24,'cocacola','8Iikj46','2018-11-06 16:14:28');
 
 INSERT INTO `products` VALUES 
 (1,1,1,'Cà Phê Đen',12,1,_binary '\0',_binary ''),
