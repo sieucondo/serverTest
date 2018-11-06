@@ -25,7 +25,12 @@ module.exports = {
     },
 
     addUser :(req, res) => {
-        let sql = 'SET @UserName = ? ;SET @Fullname = ?;SET @Address = ?;SET @StoreId = ?;SET @RoleId = ?;SET @Password = ?;\
+        let sql = ' SET @UserName = ? ;\
+                    SET @Fullname = ?;\
+                    SET @Address = ?;\
+                    SET @StoreId = ?;\
+                    SET @RoleId = ?;\
+                    SET @Password = ?;\
         CALL `addUser`(@UserName ,@Fullname ,@Address ,@StoreId ,@RoleId,@Password)';
         db.query(sql,[req.params.Username,req.params.FullName,
             req.params.Address,req.params.StoreId,req.params.RoleId,req.params.Password], (err, response) => {
