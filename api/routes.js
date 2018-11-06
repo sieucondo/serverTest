@@ -50,7 +50,7 @@ module.exports = function (app) {
   app.route('/createorderdetail/:OrderId&:ProductId&:Quantity')
     .post(orderCtrl.addProductsToOrderDetail);
 
-  app.route('/user/getAllUser')
+  app.route('/user-getAllUser')
     .get(userCtrl.getAllUser);
 
 

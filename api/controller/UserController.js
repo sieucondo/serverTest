@@ -16,7 +16,7 @@ module.exports = {
     },
 
     getAllUser: (req, res) => {
-        let sql = 'Select u.Id,u.UserName,u.Fullname,u.Address,u.Dob,u.StoreId,u.RoleId,u.Password, s.StoreName\
+        let sql = 'Select u.Id,u.UserName,u.Fullname,u.Address,u.StoreId,u.RoleId,u.Password, s.StoreName\
         from user u, store s\
         where u.StoreId = s.Id and IsDeleted=0';
         db.query(sql, (err, response) => {
