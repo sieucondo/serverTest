@@ -76,4 +76,7 @@ module.exports = function (app) {
 
   app.route('/removeUser/:userId')
     .post(userCtrl.removeUser);
+
+  app.route('/order-info/:storeId')
+    .get(orderCtrl.getOrderDetailByStoreId);
 };
