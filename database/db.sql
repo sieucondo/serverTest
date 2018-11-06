@@ -120,7 +120,8 @@ CHANGE COLUMN `UserKey` `UserName` VARCHAR(32) NOT NULL ,
 CHANGE COLUMN `Password` `Password` VARCHAR(32) CHARACTER SET 'utf8' NOT NULL ;
 ALTER TABLE `fastorder`.`user` 
 ADD COLUMN `RoleId` INT(11) NOT NULL AFTER `StoreId`;
-
+ALTER TABLE `fastorder`.`user` 
+ADD COLUMN `IsDeleted` BIT NULL DEFAULT 0 AFTER `Password`;
 
 CREATE TABLE `wifi` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,

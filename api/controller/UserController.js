@@ -17,7 +17,8 @@ module.exports = {
 
     getAllUser: (req, res) => {
         let sql = 'Select Id,UserName,Fullname,Address,Dob,StoreId,RoleId,Password\
-        from user';
+        from user\
+        WHERE IsDeleted=0';
         db.query(sql, (err, response) => {
             if (err) throw err
             res.json(response)
@@ -25,12 +26,23 @@ module.exports = {
     },
 
     addUser :(req, res) => {
-        let sql = 'SET @UserName = ? ;SET @Fullname = ?;SET @Address = ?;SET @StoreId = ?;SET @RoleId = ?;SET @Password = ?;\
+        var un = req.params.Username;
+        var dn = req.params.FullName;
+        var add = req.params.Address;
+        var sId = req.params.StoreId;
+        var rId = req.params.RoleId;
+        var pass = req.params.Password;
+
+        let sql = ' SET @UserName = ? ;\
+                    SET @Fullname = ?;\
+                    SET @Address = ?;\
+                    SET @StoreId = ?;\
+                    SET @RoleId = ?;\
+                    SET @Password = ?;\
         CALL `addUser`(@UserName ,@Fullname ,@Address ,@StoreId ,@RoleId,@Password)';
-        db.query(sql,[req.params.Username,req.params.FullName,
-            req.params.Address,req.params.StoreId,req.params.RoleId,req.params.Password], (err, response) => {
+        db.query(sql,[un, dn,add, sId, rId, pass], (err, response) => {
             if (err) throw err
-            res.json(response)
+            res.json({message: 'Inserted success '})
         })
     },
 };

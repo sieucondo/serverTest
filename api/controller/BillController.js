@@ -22,5 +22,25 @@ module.exports = {
             if (err) throw err
             res.json({ message: 'Inserted successfully!' })
         })
-    }
+    },
+    // hàm trả về thông tin bill qua storeId
+    getBillByStoreId: (req, res) => {
+        let sql = 'SELECT \
+            b.Id,\
+            b.TableId,\
+            b.DateCreate,\
+            (SELECT \
+                    SUM(price) AS Total FROM billdetail bd\
+                WHERE bd.billid = b.Id) AS Total\
+        FROM\
+            fastorder.bill b\
+            JOIN `table` t ON t.Id = b.TableId\
+            JOIN store s ON s.Id = t.StoreId\
+        WHERE\
+            s.Id = ?;';
+        db.query(sql, [req.params.storeId], (err, response) => {
+            if (err) throw err
+            res.json(response);
+        })
+    },
 }
