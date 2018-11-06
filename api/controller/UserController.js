@@ -16,9 +16,9 @@ module.exports = {
     },
 
     getAllUser: (req, res) => {
-        let sql = 'Select Id,UserName,Fullname,Address,Dob,StoreId,RoleId,Password\
-        from user\
-        WHERE IsDeleted=0';
+        let sql = 'Select u.Id,u.UserName,u.Fullname,u.Address,u.StoreId,u.RoleId,u.Password, s.StoreName,r.RoleType\
+        from user u, store s,role r\
+        where u.StoreId = s.Id and r.Id = u.RoleId and IsDeleted=0';
         db.query(sql, (err, response) => {
             if (err) throw err
             res.json(response)
@@ -53,5 +53,20 @@ module.exports = {
             if (err) throw err
             res.json({ message: 'Remove user successfully!' })
         })
-    }
+    },
+    updateUser: (req, res) => {
+        var fn = req.params.fullName;
+        var add = req.params.address;
+        var uId = req.params.userId;
+        let sql = 'UPDATE `fastorder`.`user`SET\
+                `Fullname` = ?,\
+                `Address` = ?\
+            WHERE `Id` = ?;';
+        db.query(sql, [fn,
+            add,
+            uId], (err, response) => {
+            if (err) throw err
+            res.json({ message: 'Update user successfully!' })
+        })
+    }    
 };
