@@ -72,7 +72,7 @@ module.exports = {
                     t.TableName,\
                     s.StoreName,\
                     p.ProductPrice,\
-                    i.ImgPath\
+                    i.ImgKey\
             FROM\
                 `table` t\
             JOIN store s ON t.storeid = s.id\
@@ -127,13 +127,6 @@ module.exports = {
     },
     // Thêm products mới vô db
     insertProductsByStoreId: (req, res) => {
-        var storeId = req.body[0].StoreId.toString();
-        var img = req.body[0].ImgUrl.toString();
-        var name = req.body[0].ProductName.toString();
-        var price = req.body[0].ProductPrice.toString();
-        var typeId = req.body[0].TypeId.toString();
-        console.log('asdsad : ', req.body[0].ImgUrl.toString());
-
         let sql = 'SET      @StoreId        = ?;\
                    SET      @ImgUrl         = ?;\
                    SET      @ProductName    = ?;\
