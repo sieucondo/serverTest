@@ -69,4 +69,7 @@ module.exports = function (app) {
 
   app.route('/bill-info/:storeId')
     .get(billCtrl.getBillByStoreId);
+
+  app.route('/user-add/:Username&:FullName&:Address&:StoreId&:RoleId&:Password')
+    .post(userCtrl.addUser);
 };
