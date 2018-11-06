@@ -50,8 +50,6 @@ module.exports = function (app) {
   app.route('/createorderdetail/:OrderId&:ProductId&:Quantity')
     .post(orderCtrl.addProductsToOrderDetail);
 
-
-
   app.route('/addproduct/:StoreId&:ImgUrl&:ProductName&:ProductPrice&:TypeId')
     .post(productsCtrl.insertProductsByStoreId);
 
