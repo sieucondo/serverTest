@@ -15,4 +15,25 @@ module.exports = {
             res.json(response)
         })
     },
+    addNewStore: (req, res) => {
+        var sn = req.params.StoreName;
+        var pn = req.params.PhoneNumber;
+        var locale = req.params.Location;
+        var province = req.params.Province;
+
+        let sql = ' SET      @StoreName     = ?;\
+                    SET      @PhoneNumber   = ?;\
+                    SET      @Location      = ?;\
+                    SET      @Province      = ?;\
+        CALL `fastorder`.`AddNewStore`(@StoreName, @PhoneNumber, @Location, @Province);';
+        db.query(sql, [
+            sn,
+            pn,
+            locale,
+            province
+        ], (err, response) => {
+            if (err) throw err
+            res.json({ message: 'Inserted successfully!' })
+        })
+    }
 }

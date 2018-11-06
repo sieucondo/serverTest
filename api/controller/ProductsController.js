@@ -151,6 +151,7 @@ module.exports = {
     },
     //UpdateProduct đã có
     updateProductsByStoreId: (req, res) => {
+
         let sql = 'SET      @ProductId      = ?;\
                    SET      @ImgUrl         = ?;\
                    SET      @ProductName    = ?;\
@@ -168,15 +169,13 @@ module.exports = {
             req.params.TypeId
         ], (err, response) => {
             if (err) throw err
-            console.log(JSON.stringify(req.body.ImgUrl))
             res.json({ message: 'Update successfully!' })
         })
     },
     // delete product - chuyển IsDelete = 0
     removeProduct: (req, res) => {
         let sql = 'UPDATE `fastorder`.`products`\
-            SET\
-            `IsDeleted` = 1\
+            SET `IsDeleted` = 1\
             WHERE `Id` = ?;'
         db.query(sql, [req.params.productId], (err, response) => {
             if (err) throw err
