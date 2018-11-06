@@ -38,23 +38,23 @@ DELIMITER $$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `AddNewProduct`(
 	_StoreId int,
 	_ImgUrl text,
-    _Description text,
 	_ProductName text,
     _ProductPrice float,
-    _Category int
+    _TypeId int
 )
 BEGIN
 	DECLARE _Curdate datetime DEFAULT current_time();
     
 	INSERT INTO `fastorder`.`image` (`Description`, `ImgPath`, `DateCreate`) VALUES (
-    _Desciption, _ImgUrl, _Curdate
+    '', _ImgUrl, _Curdate
 	);
-    INSERT INTO `fastorder`.`products` (`StoreId`, `ImageId`, `ProductName`, `ProductPrice`, `Category`) VALUES (
+    
+    INSERT INTO `fastorder`.`products` (`StoreId`, `ImageId`, `ProductName`, `ProductPrice`, `TypeId`) VALUES (
     _StoreId,
     (select id from image where ImgPath LIKE _ImgUrl and DateCreate = _Curdate),
     _ProductName,
     _ProductPrice,
-    _Category
+    _TypeId
 	);
 
 END$$
@@ -110,6 +110,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `UpdateProduct`(
 	_ProductId int,
     _ImgUrl text,
     _ProductName text,
+	_ProductPrice text,
     _IsAvailable int
 )
 BEGIN
@@ -172,4 +173,40 @@ BEGIN
 
 END
 $$
+DELIMITER ;
+
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `CreateNewOrder`(
+	_TableKey text
+)
+BEGIN
+	DECLARE _Curdate datetime DEFAULT current_time();
+	DECLARE _TableId int DEFAULT (select id from `table` where TableKey = _TableKey);
+    
+	INSERT INTO `fastorder`.`order` (`TableId`,`DateCreate`)VALUES
+	((select id from `table` where tablekey = _TableKey),
+		_Curdate
+    );
+    
+    select id as orderId from `order` where TableId=_TableId and DateCreate=_Curdate;
+
+END$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `AddToOrderDetail`(
+    IN _OrderId int,
+    IN _ProductId int,
+    IN _Quantity int
+)
+BEGIN
+	INSERT INTO `fastorder`.`orderdetail`(`OrderId`,`ProductId`,`ProductName`,`Quantity`,`Price`)VALUES
+	(	_OrderId,
+		_ProductId,
+	(select ProductName from products where id = _ProductId),
+		_Quantity,
+	(select ProductPrice from products where id = _ProductId) * _Quantity
+	);
+
+END$$
 DELIMITER ;
