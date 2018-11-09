@@ -5,9 +5,9 @@ const mysql = require('mysql')
 const db = require('../db')
 
 module.exports = {
-    getRoleAndStoreId: (req, res) => {
+    checkLogin: (req, res) => {
         let sql = 'SET @UserName = ? ;SET @Password = ?;\
-        CALL `getRoleAndStoreId`(@UserName, @Password);';
+        CALL `checkLogin`(@UserName, @Password);';
 
         db.query(sql, [req.params.Username, req.params.Password], (err, response) => {
             if (err) throw err

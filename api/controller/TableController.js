@@ -38,29 +38,31 @@ module.exports = {
         })
     },
     addNewTable: (req, res) => {
-        var sId = req.params.StoreId;
-        var tk = req.params.TableKey;
-        var tn = req.params.TableName;
+        var StoreId = req.params.StoreId;
+        var TableKey = req.params.TableKey;
+        var TableName = req.params.TableName;
 
         let sql = ' SET @StoreId = ?;\
                     SET @TableKey = ?;\
                     SET @TableName = ?;\
         CALL `AddNewTable`(@StoreId, @TableKey, @TableName);';
         db.query(sql, [
-            sId,
-            tk,
-            tn], (err, response) => {
+            StoreId,
+            TableKey,
+            TableName], (err, response) => {
                 if (err) throw err
                 res.json({ message: 'Inserted successfully!' })
             })
     },
     updateTable: (req, res) => {
         var tn = req.params.tableName;
-        var tId = req.params.tableId
+        var tId = req.params.tableId;
+        var IsAvailable = req.params.IsAvailable
         let sql = 'UPDATE `fastorder`.`table`\
-            SET `TableName` = ? \
-            WHERE `Id` = ?;';
-        db.query(sql, [tn.toString(), tId], (err, response) => {
+        SET `TableName`   = ?,\
+            `IsAvailable` = ?\
+        WHERE `Id` = ?';
+        db.query(sql, [tn.toString(), parseInt(IsAvailable), tId], (err, response) => {
             if (err) throw err
             res.json({ message: 'Update table successfully!' })
         })
