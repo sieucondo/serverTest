@@ -77,13 +77,13 @@ module.exports = function (app) {
   app.route('/removeUser/:userId')
     .post(userCtrl.removeUser);
 
-    app.route('/removeStore/:storeId')
+  app.route('/removeStore/:storeId')
     .post(storeCtrl.removeStore);
 
-      app.route('/order-info/:storeId')
+  app.route('/order-info/:storeId')
     .get(orderCtrl.getOrderDetailByStoreId);
 
-    app.route('/update-user/:fullName&:address&:userId')
+  app.route('/update-user/:fullName&:address&:userId')
     .post(userCtrl.updateUser);
 
   app.route('/update-store/:location&:phoneNumber&:storeName&:province&:storeId')
@@ -94,17 +94,17 @@ module.exports = function (app) {
 
   app.route('/updatetable/:tableName&:tableId&:IsAvailable')
     .post(tableCtrl.updateTable);
-    
-    app.route('/tablelist/:storeID')
+
+  app.route('/tablelist/:storeID')
     .get(tableCtrl.getTablesByStoreID);
 
-    app.route('/addtable/:StoreId&:TableKey&:TableName')
+  app.route('/addtable/:StoreId&:TableKey&:TableName')
     .post(tableCtrl.addNewTable);
-    
-    app.route('/user-getalluser')
+
+  app.route('/user-getalluser')
     .get(userCtrl.getAllUser);
 
-    app.route('/checklogin/:Username&:Password')
+  app.route('/checklogin/:Username&:Password')
     .get(userCtrl.checkLogin);
 
 };
