@@ -121,7 +121,7 @@ CREATE TABLE IF NOT EXISTS `fastorder`.`image` (
   `DateCreate` DATETIME NULL DEFAULT NULL,
   PRIMARY KEY (`Id`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 47
+AUTO_INCREMENT = 1
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
@@ -747,3 +747,30 @@ DELIMITER ;
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+
+USE `fastorder`;
+DROP procedure IF EXISTS `GetOrderDetailByOrderId`;
+
+DELIMITER $$
+USE `fastorder`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `GetOrderDetailByOrderId`(
+	_OrderId int
+)
+BEGIN
+	SELECT 	od.OrderId, 
+            t.TableName,
+            od.ProductName,
+            od.Quantity,
+            od.Price,
+            o.DateCreate
+	FROM
+		orderdetail od
+		JOIN `order` o ON od.OrderId = o.Id
+		JOIN `table` t ON o.TableId = t.Id
+	WHERE
+		o.Id = _OrderId
+    ;
+END$$
+
+DELIMITER ;
+

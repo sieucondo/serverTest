@@ -53,5 +53,13 @@ module.exports = {
             if (err) throw err
             res.json(response);
         })
+    },
+    getOrderDetailByOrderId: (req, res) => {
+        let sql ='SET   @OrderId    =   ?;\
+        CALL `fastorder`.`GetOrderDetailByOrderId`(@OrderId);';
+        db.query(sql, [req.params.orderId], (err, response) => {
+            if (err) throw err
+            res.json(response[1]);
+        })
     }
 }

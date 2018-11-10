@@ -86,7 +86,7 @@ module.exports = function (app) {
   app.route('/update-user/:fullName&:address&:userId')
     .post(userCtrl.updateUser);
 
-  app.route('/update-store/:location&:phoneNumber&:storeName&:province&:storeId')
+  app.route('/update-store/`:location&:phoneNumber&:storeName&:province&:storeId')
     .post(storeCtrl.updateStore);
 
   app.route('/add-table/:StoreId&:TableKey&:TableName')
@@ -107,4 +107,6 @@ module.exports = function (app) {
   app.route('/checklogin/:Username&:Password')
     .get(userCtrl.checkLogin);
 
+  app.route('/order-detail/:orderId')
+    .get(orderCtrl.getOrderDetailByOrderId);
 };
