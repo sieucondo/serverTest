@@ -25,23 +25,11 @@ module.exports = {
     },
     // hàm trả về thông tin bill qua storeId
     getBillByStoreId: (req, res) => {
-        let sql = 'SELECT \
-            b.Id,\
-            b.TableId,\
-            t.TableName,\
-            b.DateCreate,\
-            (SELECT \
-                    SUM(price) AS Total FROM billdetail bd\
-                WHERE bd.billid = b.Id) AS Total\
-        FROM\
-            fastorder.bill b\
-            JOIN `table` t ON t.Id = b.TableId\
-            JOIN store s ON s.Id = t.StoreId\
-        WHERE\
-            s.Id = ?;';
+        let sql = 'SET  @StoreId    =   ?;\
+        CALL `fastorder`.`GetBillByStoreId`(@StoreId);';
         db.query(sql, [req.params.storeId], (err, response) => {
             if (err) throw err
-            res.json(response);
+            res.json(response[1]);
         })
     },
 }

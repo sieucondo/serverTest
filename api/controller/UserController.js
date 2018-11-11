@@ -16,9 +16,7 @@ module.exports = {
     },
 
     getAllUser: (req, res) => {
-        let sql = 'Select u.Id,u.UserName,u.Fullname,u.Address,u.StoreId,u.RoleId,u.Password, s.StoreName,r.RoleType\
-        from user u, store s,role r\
-        where u.StoreId = s.Id and r.Id = u.RoleId and u.IsDeleted = 0';
+        let sql = 'CALL `fastorder`.`GetAllUser`();';
         db.query(sql, (err, response) => {
             if (err) throw err
             res.json(response)
@@ -58,10 +56,10 @@ module.exports = {
         var fn = req.params.fullName;
         var add = req.params.address;
         var uId = req.params.userId;
-        let sql = 'UPDATE `fastorder`.`user`SET\
-                `Fullname` = ?,\
-                `Address` = ?\
-            WHERE `Id` = ?;';
+        let sql = ' SET  @UserId    = ?;\
+                    SET  @FullName  = ?;\
+                    SET  @Address   = ?;\
+        CALL `fastorder`.`UpdateUser`(@UserId, @FullName, @Address);';
         db.query(sql, [fn,
             add,
             uId], (err, response) => {

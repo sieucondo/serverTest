@@ -6,10 +6,7 @@ const db = require('./../db')
 
 module.exports = {
     getAllStore: (req, res) => {
-        let sql = 'SELECT `Id`, `StoreKey`, `Location`,`StoreName`,`PhoneNumber`,\
-        `Province`,`UserId`,\
-        CASE WHEN IsDeleted = 0 THEN FALSE ELSE TRUE END AS IsDeleted\
-        FROM `store` WHERE IsDeleted=0'
+        let sql = 'CALL `fastorder`.`GetAllStore`();'
         db.query(sql, (err, response) => {
             if (err) throw err
             res.json(response)
@@ -51,12 +48,12 @@ module.exports = {
         var sn = req.params.storeName;
         var province = req.params.province;
         var sId = req.params.storeId;
-        let sql = 'UPDATE `fastorder`.`store`SET\
-                `Location` = ?,\
-                `PhoneNumber` = ?,\
-                `StoreName` = ?,\
-                `Province` = ?\
-            WHERE `Id` = ?;';
+        let sql = ' SET @StoreId        = ?;\
+                    SET @Location       = ?;\
+                    SET @PhoneNumber    = ?;\
+                    SET @StoreName      = ?;\
+                    SET @Province       = ?;\
+        CALL `fastorder`.`UpdateStore`(@StoreId, @Location, @PhoneNumber, @StoreName, @Province);';
         db.query(sql, [location, pn, sn, province, sId], (err, response) => {
             if (err) throw err
             res.json({ message: 'Update user successfully!' })

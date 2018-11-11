@@ -500,13 +500,12 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `GetBillByStoreId`(
 )
 BEGIN
 	SELECT 
-    s.Id AS StoreId,
-    t.Id AS TableId,
-    b.Id AS BillId,
-    b.DateCreate,
+		b.Id,
+		b.TableId,
+		t.TableName,
+		b.DateCreate,
     (SELECT SUM(price) AS Total FROM billdetail bd 
-		WHERE bd.billid = b.Id) AS Total,
-    CASE WHEN o.Status = 0 THEN FALSE ELSE TRUE END AS `Status`
+		WHERE bd.billid = b.Id) AS Total
 FROM
     `bill` b
         JOIN
@@ -770,6 +769,275 @@ BEGIN
 	WHERE
 		o.Id = _OrderId
     ;
+END$$
+
+DELIMITER ;
+
+USE `fastorder`;
+DROP procedure IF EXISTS `GetOrderDetailByStoreId`;
+
+DELIMITER $$
+USE `fastorder`$$
+CREATE PROCEDURE `GetOrderDetailByStoreId` (
+	_StoreId int
+)
+BEGIN
+	SELECT 
+    od.OrderId,
+    t.TableName,
+    od.ProductName,
+    od.Quantity,
+    od.Price,
+    o.DateCreate
+	FROM
+		orderdetail od
+			JOIN
+		`order` o ON od.OrderId = o.Id
+			JOIN
+		`table` t ON o.TableId = t.Id
+			JOIN
+		store s ON s.Id = t.StoreId
+	WHERE
+		s.Id = _StoreId
+	ORDER BY o.Id DESC;
+END$$
+
+DELIMITER ;
+
+USE `fastorder`;
+DROP procedure IF EXISTS `GetProductById`;
+
+DELIMITER $$
+USE `fastorder`$$
+CREATE PROCEDURE `GetProductById` (
+	_ProductId int
+)
+BEGIN
+	SELECT 
+		`products`.`Id`,
+		`StoreId`,
+		`ImageId`,
+		`ProductName`,
+		`ProductPrice`,
+		`TypeId`,
+		CASE
+			WHEN IsAvailable = 0 THEN FALSE
+			ELSE TRUE
+		END AS IsAvailable
+	FROM
+		`products`
+	WHERE
+		Id = _ProductId
+        AND IsDeleted = 0
+		AND IsAvailable = 1
+	;
+END$$
+
+DELIMITER ;
+
+USE `fastorder`;
+DROP procedure IF EXISTS `GetAllProduct`;
+
+DELIMITER $$
+USE `fastorder`$$
+CREATE PROCEDURE `GetAllProduct` (
+	_Tablekey text
+)
+BEGIN
+	SELECT 
+		p.id,
+		ty.Id AS TypeId,
+		p.ProductName,
+		ty.`Type`,
+		t.TableName,
+		s.StoreName,
+		p.ProductPrice
+	FROM
+		`table` t
+	JOIN store s ON t.storeid = s.id
+	JOIN products p ON s.id = p.storeid
+	JOIN `type` ty ON ty.id = p.typeid
+	WHERE
+		t.tablekey = _TableKey AND p.IsDeleted = 0
+		;
+END$$
+
+DELIMITER ;
+
+USE `fastorder`;
+DROP procedure IF EXISTS `GetProductByType`;
+
+DELIMITER $$
+USE `fastorder`$$
+CREATE PROCEDURE `GetProductByType` (
+	_Tablekey text,
+    _TypeId int
+)
+BEGIN
+	SELECT *
+	FROM (SELECT 
+			p.id,
+			ty.Id AS TypeId,
+			p.ProductName,
+			ty.`Type`,
+			t.TableName,
+			s.StoreName,
+			p.ProductPrice,
+			i.ImgKey
+		FROM
+			`table` t
+		JOIN store s ON t.storeid = s.id
+		JOIN products p ON s.id = p.storeid
+		JOIN `type` ty ON ty.id = p.typeid
+		JOIN `image` i ON i.Id = p.ImageId
+		WHERE
+				t.tablekey = _Tablekey AND p.IsDeleted = 0 AND p.IsAvailable = 1) a
+	WHERE
+		a.TypeId LIKE CONCAT('%', _TypeId , '%')
+		;
+END$$
+
+DELIMITER ;
+
+USE `fastorder`;
+DROP procedure IF EXISTS `GetAllStore`;
+
+DELIMITER $$
+USE `fastorder`$$
+CREATE PROCEDURE `GetAllStore` ()
+BEGIN
+	SELECT `Id`, `StoreKey`, `Location`,`StoreName`,`PhoneNumber`,
+		`Province`,`UserId`,
+		CASE WHEN IsDeleted = 0 THEN FALSE ELSE TRUE END AS IsDeleted
+	FROM `store` WHERE IsDeleted=0
+        ;
+END$$
+
+DELIMITER ;
+
+USE `fastorder`;
+DROP procedure IF EXISTS `UpdateStore`;
+
+DELIMITER $$
+USE `fastorder`$$
+CREATE PROCEDURE `UpdateStore` (
+	_StoreId int,
+	_Location text,
+    _PhoneNumber text,
+    _StoreName text,
+    _Province text
+)
+BEGIN
+	UPDATE `fastorder`.`store`SET
+		`Location` = _Location,
+		`PhoneNumber` = _PhoneNumber,
+		`StoreName` = _StoreName,
+		`Province` = _Province
+	WHERE `Id` = _StoreId
+	;
+END$$
+
+DELIMITER ;
+
+USE `fastorder`;
+DROP procedure IF EXISTS `GetTableStatus`;
+
+DELIMITER $$
+USE `fastorder`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `GetTableStatus`(
+	_TableKey text
+)
+BEGIN
+	SELECT CASE WHEN t.IsAvailable = 0 THEN FALSE ELSE TRUE END AS `IsAvailable`
+	FROM `table` t
+	WHERE t.TableKey = _TableKey
+	;
+END$$
+
+DELIMITER ;
+USE `fastorder`;
+DROP procedure IF EXISTS `UpdateTable`;
+
+DELIMITER $$
+USE `fastorder`$$
+CREATE PROCEDURE `UpdateTable` (
+	_TableId int,
+    _TableName text,
+    _IsAvailable text
+)
+BEGIN
+	UPDATE `fastorder`.`table`
+		SET `TableName`   = _TableName,
+			`IsAvailable` = _IsAvailable
+	WHERE `Id` = _TableId
+        ;
+END$$
+
+DELIMITER ;
+
+USE `fastorder`;
+DROP procedure IF EXISTS `GetAllTableKey`;
+
+DELIMITER $$
+USE `fastorder`$$
+CREATE PROCEDURE `GetAllTableKey` (
+	_TableKey text
+)
+BEGIN
+	SELECT t.Id AS TableId, s.Id AS StoreId, t.TableKey, t.TableName, s.StoreName
+	FROM `table` t
+		JOIN store s ON s.Id = t.StoreId
+	WHERE t.TableKey = _TableKey
+		;
+END$$
+
+DELIMITER ;
+
+USE `fastorder`;
+DROP procedure IF EXISTS `GetAllUser`;
+
+DELIMITER $$
+USE `fastorder`$$
+CREATE PROCEDURE `GetAllUser` ()
+BEGIN
+	SELECT 
+    u.Id,
+    u.UserName,
+    u.Fullname,
+    u.Address,
+    u.StoreId,
+    u.RoleId,
+    u.Password,
+    s.StoreName,
+    r.RoleType
+	FROM
+		user u,
+		store s,
+		role r
+	WHERE
+		u.StoreId = s.Id AND r.Id = u.RoleId
+			AND u.IsDeleted = 0
+        ;
+END$$
+
+DELIMITER ;
+
+USE `fastorder`;
+DROP procedure IF EXISTS `UpdateUser`;
+
+DELIMITER $$
+USE `fastorder`$$
+CREATE PROCEDURE `UpdateUser` (
+	_UserId int,
+    _FullName text,
+    _Address text
+)
+BEGIN
+	UPDATE `fastorder`.`user`SET
+		`Fullname` = _FullName,
+		`Address` = _Address
+	WHERE `Id` = _UserId
+		;
 END$$
 
 DELIMITER ;

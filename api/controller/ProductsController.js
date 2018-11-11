@@ -6,18 +6,11 @@ const db = require('./../db')
 
 module.exports = {
     getProductById: (req, res) => {
-        let sql = 'SELECT `products`.`Id`,\
-            `StoreId`,\
-            `ImageId`,\
-            `ProductName`,\
-            `ProductPrice`,\
-            `TypeId`,\
-            CASE WHEN IsAvailable = 0 THEN FALSE ELSE TRUE END AS IsAvailable\
-            FROM `products`\
-            WHERE Id = ? AND IsDeleted = 0 AND IsAvailable = 1'
+        let sql = 'SET @ProductId = ?;\
+        CALL `fastorder`.`GetProductById`(@ProductId);';
         db.query(sql, [req.params.productId], (err, response) => {
             if (err) throw err
-            res.json(response)
+            res.json(response[1])
         })
     },
     // lấy ra categories nhà hàng theo tableKey
@@ -62,27 +55,9 @@ module.exports = {
     },
     // lấy menu theo tableKey và Type
     getProductByType: (req, res) => {
-        let sql = 'SELECT *\
-        FROM\
-            (SELECT \
-                p.id,\
-                    ty.Id AS TypeId,\
-                    p.ProductName,\
-                    ty.`Type`,\
-                    t.TableName,\
-                    s.StoreName,\
-                    p.ProductPrice,\
-                    i.ImgKey\
-            FROM\
-                `table` t\
-            JOIN store s ON t.storeid = s.id\
-            JOIN products p ON s.id = p.storeid\
-            JOIN `type` ty ON ty.id = p.typeid\
-            JOIN `image` i ON i.Id = p.ImageId\
-            WHERE\
-                    t.tablekey = ? AND p.IsDeleted = 0 AND p.IsAvailable = 1) a\
-        WHERE\
-            a.TypeId LIKE "%"?"%"';
+        let sql = ' SET @Tablekey = ?;\
+                    SET @TypeId = ?;\
+        CALL `fastorder`.`GetProductByType`(@Tablekey, @TypeId);';
         let tableKey = req.params.tableKey;
         let typeId = req.params.typeId;
         if (typeId == 0) {
@@ -90,31 +65,18 @@ module.exports = {
         }
         db.query(sql, [tableKey, typeId], (err, response) => {
             if (err) throw err
-            res.json(response)
+            res.json(response[2])
         });
     },
     //lấy tất cả đồ ăn đồ uống trong quán
     getAllProduct: (req, res) => {
-        let sql = 'SELECT \
-                p.id,\
-                ty.Id AS TypeId,\
-                p.ProductName,\
-                ty.`Type`,\
-                t.TableName,\
-                s.StoreName,\
-                p.ProductPrice\
-            FROM\
-                `table` t\
-            JOIN store s ON t.storeid = s.id\
-            JOIN products p ON s.id = p.storeid\
-            JOIN `type` ty ON ty.id = p.typeid\
-            WHERE\
-                t.tablekey = ? AND p.IsDeleted = 0';
+        let sql = 'SET  @Tablekey = ?;\
+        CALL `fastorder`.`GetAllProduct`(@Tablekey);';
         let tableKey = req.params.tableKey;
 
         db.query(sql, [tableKey], (err, response) => {
             if (err) throw err
-            res.json(response)
+            res.json(response[1])
         })
     },
     getProductsByStoreId: (req, res) => {
