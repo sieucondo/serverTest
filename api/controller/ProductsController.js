@@ -63,7 +63,7 @@ module.exports = {
         if (typeId == 0) {
             typeId = ""
         }
-        db.query(sql, [tableKey, typeId], (err, response) => {
+        db.query(sql, [tableKey, typeId.toString()], (err, response) => {
             if (err) throw err
             res.json(response[2])
         });

@@ -6,7 +6,8 @@ const db = mysql.createConnection({
   user: process.env.DB_USER || "root",
   password: process.env.DB_PASSWORD || "123456",
   database: process.env.DB_NAME || "fastorder",
-  multipleStatements: true
+  multipleStatements: true,
+  timezone: 'utc' 
 });
 
 module.exports = db

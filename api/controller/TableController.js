@@ -57,7 +57,7 @@ module.exports = {
                     SET @TableName      = ?;\
                     SET @IsAvailable    = ?;\
         CALL `fastorder`.`UpdateTable`(@TableId, @TableName, @IsAvailable);';
-        db.query(sql, [tn.toString(), parseInt(IsAvailable), tId], (err, response) => {
+        db.query(sql, [tId,tn.toString(), parseInt(IsAvailable)], (err, response) => {
             if (err) throw err
             res.json({ message: 'Update table successfully!' })
         })

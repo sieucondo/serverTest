@@ -9,7 +9,7 @@ module.exports = {
         let sql = 'CALL `fastorder`.`GetAllStore`();'
         db.query(sql, (err, response) => {
             if (err) throw err
-            res.json(response)
+            res.json(response[0])
         })
     },
     addNewStore: (req, res) => {
@@ -54,7 +54,7 @@ module.exports = {
                     SET @StoreName      = ?;\
                     SET @Province       = ?;\
         CALL `fastorder`.`UpdateStore`(@StoreId, @Location, @PhoneNumber, @StoreName, @Province);';
-        db.query(sql, [location, pn, sn, province, sId], (err, response) => {
+        db.query(sql, [sId, location, pn, sn, province], (err, response) => {
             if (err) throw err
             res.json({ message: 'Update user successfully!' })
         })

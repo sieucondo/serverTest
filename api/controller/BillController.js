@@ -32,4 +32,20 @@ module.exports = {
             res.json(response[1]);
         })
     },
+    getBillDetailByBillId: (req, res) => {
+        let sql = 'SET  @Id    =   ?;\
+        CALL `fastorder`.`GetBillDetailById`(@Id);';
+        db.query(sql, [req.params.Id], (err, response) => {
+            if (err) throw err
+            res.json(response[1]);
+        })
+    },
+    getBillByBillId: (req, res) => {
+        let sql = 'SET  @Id    =   ?;\
+        CALL `fastorder`.`GetBillById`(@Id);';
+        db.query(sql, [req.params.Id], (err, response) => {
+            if (err) throw err
+            res.json(response[1]);
+        })
+    },
 }
