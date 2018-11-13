@@ -111,4 +111,7 @@ module.exports = function (app) {
     .get(billCtrl.getBillDetailByBillId);
   app.route('/getBill/:Id')
     .get(billCtrl.getBillByBillId);
+
+    app.route('/getOrder/:orderId')
+    .get(orderCtrl.getOrderByOrderId);
 };
