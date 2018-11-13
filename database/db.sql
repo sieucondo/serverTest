@@ -745,9 +745,11 @@ BEGIN
             od.ProductName,
             od.Quantity,
             od.Price,
-            o.DateCreate
+            o.DateCreate,
+            p.ProductPrice
 	FROM
-		orderdetail od
+		products p
+		JOIN  `orderdetail` od ON p.Id = od.ProductId
 		JOIN `order` o ON od.OrderId = o.Id
 		JOIN `table` t ON o.TableId = t.Id
 	WHERE
@@ -1150,6 +1152,36 @@ BEGIN
 
 END$$
 
+DELIMITER ;
+
+-- -----------------------------------------------------
+-- procedure GetOrderByOrderId
+-- -----------------------------------------------------
+
+USE `fastorder`;
+DROP procedure IF EXISTS `fastorder`.`GetOrderByOrderId`;
+
+DELIMITER $$
+USE `fastorder`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `GetOrderByOrderId`(
+  _Id int
+)
+BEGIN
+SELECT 
+ o.Id as OrderId , 
+ t.TableName , 
+ o.DateCreate,
+  (SELECT SUM(price) AS Total FROM orderdetail bd 
+		WHERE bd.OrderId = o.Id) AS Total 
+
+FROM 
+fastorder.`order` o , 
+fastorder.`table` t 
+where  
+o.Id = _Id and 
+o.TableId = t.Id ;
+
+END$$
 DELIMITER ;
 
 SET SQL_MODE=@OLD_SQL_MODE;
